@@ -2,9 +2,8 @@
 
 __galaxy_config:
   galaxy:
-    brand: "Australia Dev"
-    database_connection: "postgres://galaxy:{{ vault_dev_db_user_password }}@dev-db.usegalaxy.org.au:5432/galaxy"
-    id_secret: "{{ vault_dev_id_secret }}"
+    brand: "Cat Dev"
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"  # cat-dev branch run db on application server
 
 # NFS stuff
 nfs_exports:
@@ -43,7 +42,7 @@ galaxy_jobconf:
       - type: registered_user_concurrent_jobs
         value: 10
 
-# variables for attaching mounted volume to application server
-galaxyserver_attached_volume_device: /dev/vdb
-galaxyserver_attached_volume_path: /mnt
-galaxyserver_attached_volume_fstype: ext4
+# # variables for attaching mounted volume to application server
+# galaxyserver_attached_volume_device: /dev/vdb
+# galaxyserver_attached_volume_path: /mnt
+# galaxyserver_attached_volume_fstype: ext4
