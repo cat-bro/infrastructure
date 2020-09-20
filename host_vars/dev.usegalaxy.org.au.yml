@@ -76,3 +76,6 @@ galaxyserver_attached_volume_fstype: ext4
 
 # cvmfs
 cvmfs_cache_base: /mnt/var/lib/cvmfs
+
+# slurm head node 
+head_nodes: "{{ groups['dev_slurm_head'] }}"
