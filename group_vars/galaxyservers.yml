@@ -243,5 +243,5 @@ galaxy_config_files:
 #Slurm client
 slurm_roles: ['exec']
 
-#Add slurm controllers hostname to hosts.
-add_hosts_head: yes
+# #Add slurm controllers hostname to hosts.
+# add_hosts_head: yes

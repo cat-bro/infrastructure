@@ -1,6 +1,10 @@
 # append domain to ansible_hostname (from hosts file) for hostname variable
 hostname: "{{ ansible_hostname }}.genome.edu.au"  # cat-dev branch has this domain
 
+head_nodes: "{{ groups['dev_slurm_head'] }}"
+worker_nodes: "{{ groups['dev_workers'] }}"
+galaxy_nodes: "{{ groups['dev_galaxy_server'] }}"
+
 #List of users to install and setup /homes for
 machine_users:
     - name: simon

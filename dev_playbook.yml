@@ -1,4 +1,4 @@
-- hosts: cat_dev_server
+- hosts: cat_server
   become: true
   vars_files:
       - group_vars/all.yml
@@ -34,7 +34,7 @@
         state: restarted
   roles:
     - galaxyproject.repos
-    # - common
+    - common
     - galaxyproject.postgresql
     - role: natefoo.postgresql_objects
       become: true
