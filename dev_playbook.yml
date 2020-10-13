@@ -46,11 +46,16 @@
     - geerlingguy.nfs
     # - galaxyproject.slurm
 
-  # post_tasks:
-  #   - name: Install slurm-drmaa
-  #     package:
-  #       name: slurm-drmaa1
-  #   - name: Reload exportfs
-  #     command: exportfs -ra
-  #     become: yes
-  #     become_user: root
+  post_tasks:
+    - name: Let anybody make changes to the server directory
+      file:
+        path: "{{ galaxy_server_dir }}"
+        mode: 0777
+        recurse: yes
+    # - name: Install slurm-drmaa
+    #   package:
+    #     name: slurm-drmaa1
+    # - name: Reload exportfs
+    #   command: exportfs -ra
+    #   become: yes
+    #   become_user: root
