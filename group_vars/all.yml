@@ -7,27 +7,30 @@ galaxy_nodes: "{{ groups['dev_galaxy_server'] }}"
 
 #List of users to install and setup /homes for
 machine_users:
-    - name: simon
-      role: sudo
-      key: files/keys/simon.pub
-    - name: nick
-      role: sudo
-      key: files/keys/nick.pub
+    # - name: simon
+    #   role: sudo
+    #   key: files/keys/simon.pub
+    # - name: nick
+    #   role: sudo
+    #   key: files/keys/nick.pub
     - name: cat
       role: sudo
       key: files/keys/catherine.pub
-    - name: igor
-      role: user
-      key: files/keys/igor.pub
-    - name: thom
+    - name: jenkins_bot
       role: sudo
-      key: files/keys/thom.pub
-    - name: mike
-      role: user
-      key: files/keys/mike.pub
-    - name: gareth
-      role: user
-      key: files/keys/gareth.pub
+      key: files/keys/jenkins_bot.pub
+    # - name: igor
+    #   role: user
+    #   key: files/keys/igor.pub
+    # - name: thom
+    #   role: sudo
+    #   key: files/keys/thom.pub
+    # - name: mike
+    #   role: user
+    #   key: files/keys/mike.pub
+    # - name: gareth
+    #   role: user
+    #   key: files/keys/gareth.pub
 
 galaxy_user:
   name: galaxy
