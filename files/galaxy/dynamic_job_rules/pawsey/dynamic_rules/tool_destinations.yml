@@ -16,7 +16,7 @@ tools:
   ivar_removereads:
     default_destination: slurm_5slots
   ivar_trim:
-    default_destination: slurm_5slots
+    default_destination: slurm_500slots
   ivar_variants:
     default_destination: slurm_5slots
   lofreq_indelqual:
