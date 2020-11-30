@@ -9,6 +9,34 @@ __galaxy_config:
 nfs_exports:
     - "{{ galaxy_root }}  *(rw,async,no_root_squash,no_subtree_check)"
 
+
+galaxy_dev_db_user_password: e15ff41b834295f6
+reader_dev_db_user_password: e15ff41b834295e2
+
+# cat-dev branch include postgresql variables here
+# PostgreSQL
+postgresql_objects_users:
+  - name: galaxy
+    password: "{{ galaxy_dev_db_user_password}}"
+    db: galaxy
+    priv: "ALL"
+  - name: reader
+    password: "{{ reader_dev_db_user_password }}"
+    db: galaxy
+postgresql_objects_privileges:
+  - database: galaxy
+    roles: reader
+    objs: ALL_IN_SCHEMA
+    privs: SELECT
+postgresql_objects_databases:
+  - name: galaxy
+    owner: galaxy
+# end cat-dev branch insertion
+
+# gxadmin
+gxadmin_dir: "{{ galaxy_root }}/dev"
+gxadmin_config_dir: "{{ galaxy_root }}/dev/gxadmin-config"
+
 #Galaxy Job Conf
 galaxy_jobconf:
     plugin_workers: 4

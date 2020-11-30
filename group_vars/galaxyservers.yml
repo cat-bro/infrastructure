@@ -6,15 +6,6 @@ group_packages:
 
 # In ansible-galaxy-test-server postgresql_objects_users and postgresql_objects_databases are defined here, but these should probably be in group_vars/db-servers.yml
 
-# cat-dev branch include postgresql variables here
-# PostgreSQL
-postgresql_objects_users:
-  - name: galaxy
-postgresql_objects_databases:
-  - name: galaxy
-    owner: galaxy
-# end cat-dev branch insertion
-
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m virtualenv # usegalaxy_eu.certbot, usegalaxy_eu.tiaas2, galaxyproject.galaxy
 certbot_virtualenv_package_name: python3-virtualenv    # usegalaxy_eu.certbot

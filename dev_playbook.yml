@@ -44,6 +44,13 @@
     - usegalaxy_eu.galaxy_systemd
     - galaxyproject.nginx
     - geerlingguy.nfs
+    - usegalaxy_eu.gxadmin
+    - role: pgpost
+      vars:
+        galaxy_password: "{{ galaxy_dev_db_user_password }}"
+        reader_password: "{{ reader_dev_db_user_password }}"
+        db_address: localhost
+        # db_address: "{{ hostvars['dev-db']['ansible_hostname'] }}"
     # - galaxyproject.slurm
 
   post_tasks:
@@ -59,3 +66,35 @@
     #   command: exportfs -ra
     #   become: yes
     #   become_user: root
+    # - name: Creae .pgpass files for reader role for all users except ubuntu
+    #   copy:
+    #     dest: "/home/{{ item.name }}/.pgpass"
+    #     content: |
+    #       "localhost:5432:*:reader:{{ reader_dev_db_user_password }}"
+    #     loop: "{{ machine_users }}"
+    # - name: Create .pgpass files for ubuntu
+    #   copy:
+    #     dest: "/home/ubuntu/.pgpass"
+    #     content: |
+    #       "localhost:5432:*:galaxy:{{ galaxy_dev_db_user_password }}"
+    # - name: Ensure variables for gxadmin are set in .bashrc for all users
+    #   block:
+    #     - name: Add env vars for gxadmin to machine_users .bashrc files
+    #       lineinfile:
+    #         path: "/home/cat/.bashrc"  #######################
+    #         # regexp: "^export {{ item.var }}"
+    #         line: "export {{ line.var }}='{{ line.val }}'"
+    #       loop:
+    #         - var: GALAXY_CONFIG_DIR
+    #           val: "{{ galaxy_config_dir }}"
+    #         - var: GALAXY_MUTABLE_CONFIG_DIR
+    #           val: "{{ galaxy_mutable_config_dir }}"
+    #         - var: GALAXY_ROOT
+    #           val: "{{ galaxy_server_dir }}"
+    #         - var: GALAXY_CONFIG_FILE
+    #           val: "{{ galaxy_config_dir }}/galaxy.yml"
+    #       loop_control:
+    #         index_var: line
+    #   loop: "{{ ( machine_users | map(attribute='name') | list ) + ['ubuntu'] }}"
+    #   loop_control:
+    #     index_var: name

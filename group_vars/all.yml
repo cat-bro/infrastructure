@@ -19,9 +19,9 @@ machine_users:
     - name: jenkins_bot
       role: sudo
       key: files/keys/jenkins_bot.pub
-    # - name: igor
-    #   role: user
-    #   key: files/keys/igor.pub
+    - name: igor
+      role: user
+      key: files/keys/igor.pub
     # - name: thom
     #   role: sudo
     #   key: files/keys/thom.pub
