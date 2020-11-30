@@ -6,7 +6,7 @@ tools:
   fasta-stats:
     default_destination: slurm_1slot
   fastp:
-    default_destination: slurm_5slots
+    default_destination: slurm_7slots
   ivar_consensus:
     default_destination: slurm_5slots
   ivar_filtervariants:
