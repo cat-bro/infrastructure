@@ -12,6 +12,10 @@ postgresql_objects_users:
     password: "{{ galaxy_dev_db_user_password}}"
     db: galaxy
     priv: "ALL"
+  - name: reader
+    password: "{{ reader_dev_db_user_password }}"
+    db: galaxy
+    priv: "SELECT"
 postgresql_objects_databases:
   - name: galaxy
     owner: galaxy
