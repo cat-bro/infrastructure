@@ -107,8 +107,8 @@ galaxy_config:
       - lib/galaxy/main.py
     farm: job-handlers:1,2
   galaxy:
-    # experimental feature
-    tool_filters: ga_custom:hide_tools
+    # # experimental feature
+    # tool_filters: ga_custom:hide_tools
     
     
     admin_users: cathjb@gmail.com
