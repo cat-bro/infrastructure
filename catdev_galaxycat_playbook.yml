@@ -33,18 +33,19 @@
         name: galaxy
         state: restarted
   roles:
-    - galaxyproject.repos
-    - common
-    - galaxyproject.postgresql
-    - role: natefoo.postgresql_objects
-      become: true
-      become_user: postgres
-    - geerlingguy.pip
-    - galaxyproject.galaxy
-    - usegalaxy_eu.galaxy_systemd
-    - galaxyproject.nginx
-    - geerlingguy.nfs
-    # - galaxyproject.slurm
+    - tiny-git
+    # - galaxyproject.repos
+    # - common
+    # - galaxyproject.postgresql
+    # - role: natefoo.postgresql_objects
+    #   become: true
+    #   become_user: postgres
+    # - geerlingguy.pip
+    # - galaxyproject.galaxy
+    # - usegalaxy_eu.galaxy_systemd
+    # - galaxyproject.nginx
+    # - geerlingguy.nfs
+    # # - galaxyproject.slurm
 
   post_tasks:
     - name: Let anybody make changes to the server directory

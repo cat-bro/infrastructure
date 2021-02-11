@@ -1,0 +1,13 @@
+- name: Clone Galaxy
+  block:
+    - name: Update Galaxy to specified ref
+      git:
+        dest: "{{ galaxy_server_dir }}"
+        force: "{{ galaxy_force_checkout }}"
+        depth: "{{ galaxy_clone_depth | default(omit) }}"
+        repo: "{{ galaxy_repo }}"
+        version: "{{ galaxy_commit_id }}"
+        executable: "{{ git_executable | default(omit) }}"
+      register: __galaxy_git_update_result
+      notify:
+        - "{{ galaxy_restart_handler_name | default('default restart galaxy handler') }}"
