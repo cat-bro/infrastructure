@@ -5,6 +5,8 @@ tools:
     default_destination: pulsar_destination
   bwa_mem:
     default_destination: pulsar_destination
+  fastqc:
+    default_destination: slurm_dest
 default_destination: slurm_dest
 
 verbose: True
