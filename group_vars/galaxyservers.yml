@@ -56,8 +56,8 @@ nginx_conf_ssl_certificate_key: /etc/ssl/user/privkey-nginx.pem
 
 # Galaxy
 
-galaxy_repo: https://github.com/cat-bro/galaxy.git
-galaxy_commit_id: look_at_tool_stdio
+# galaxy_repo: https://github.com/cat-bro/galaxy.git
+# galaxy_commit_id: look_at_tool_stdio
 
 galaxy_create_user: true
 galaxy_separate_privileges: true

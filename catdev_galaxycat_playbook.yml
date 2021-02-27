@@ -1,5 +1,8 @@
 - hosts: cat_server
   become: true
+  vars:
+   - galaxy_repo: https://github.com/cat-bro/galaxy.git
+   - galaxy_commit_id: tool_version_ordering
   vars_files:
       - group_vars/all.yml
       # - group_vars/VAULT
