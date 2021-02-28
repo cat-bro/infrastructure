@@ -9,5 +9,5 @@
         version: "{{ galaxy_commit_id }}"
         executable: "{{ git_executable | default(omit) }}"
       register: __galaxy_git_update_result
-      # notify:
-      #   - "{{ galaxy_restart_handler_name | default('default restart galaxy handler') }}"
+      notify:
+        - "{{ galaxy_restart_handler_name | default('default restart galaxy handler') }}"
