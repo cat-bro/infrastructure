@@ -235,39 +235,57 @@ galaxy_jobconf:
           submit_native_specification: "--nodes=1 --ntasks=32 --ntasks-per-node=32 --mem=62080"
           transport: curl
     limits:
-      #General limits for user submission
+      # General limits for user submission
       - type: anonymous_user_concurrent_jobs
         value: 1
       - type: registered_user_concurrent_jobs
         value: 10
-      #Limits for local slurm cluster
+      # Limits for local slurm cluster
+      # slurm_1slot_upload
       - type: destination_total_concurrent_jobs
         id: slurm_1slot_upload
         value: 10
       - type: destination_user_concurrent_jobs
         id: slurm_1slot_upload
         value: 4
+      # slurm_2slots
       - type: destination_user_concurrent_jobs
         id: slurm_2slots
         value: 10
+      # slurm_3slots
       - type: destination_user_concurrent_jobs
         id: slurm_3slots
         value: 10
+      # slurm_5slots
       - type: destination_user_concurrent_jobs
         id: slurm_5slots
         value: 5
+      # slurm_7slots
+      - type: destination_total_concurrent_jobs
+        id: slurm_7slots
+        value: 5
       - type: destination_user_concurrent_jobs
         id: slurm_7slots
+        value: 2
+      # slurm_9slots
+      - type: destination_total_concurrent_jobs
+        id: slurm_9slots
         value: 3
       - type: destination_user_concurrent_jobs
         id: slurm_9slots
         value: 2
-      - type: destination_user_concurrent_jobs
+      # slurm_16slots
+      - type: destination_total_concurrent_jobs
         id: slurm_16slots
         value: 2
       - type: destination_user_concurrent_jobs
+        id: slurm_16slots
+        value: 1
+      # slurm_32slots
+      - type: destination_user_concurrent_jobs
         id: slurm_32slots
         value: 1
+      # slurm_9slots_1off
       - type: destination_total_concurrent_jobs
         id: slurm_9slots_1off
         value: 1
