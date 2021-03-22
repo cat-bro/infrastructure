@@ -37,6 +37,7 @@ host_galaxy_config:  # renamed from __galaxy_config
     id_secret: "{{ vault_staging_id_secret }}"
     file_path: "{{ galaxy_root }}/data"
     galaxy_infrastructure_url: 'https://staging.usegalaxy.org.au'
+    enable_oidc: true
 
 #Galaxy Job Conf
 galaxy_jobconf:

@@ -68,6 +68,7 @@ cloudstor_settings:
 
 tool_config_files: "{{ cloudstor_settings['tool_config_files'] if use_cloudstor_conf|d(false) == true else default_settings['tool_config_files'] }}"
 user_prefs_extra_config_file: "{{ cloudstor_settings['user_prefs_extra_config_file'] if use_cloudstor_conf|d(false) == true else default_settings['user_prefs_extra_config_file'] }}"
+# end variables dependent on use_cloudstor_conf
 
 galaxy_create_user: true
 galaxy_separate_privileges: true
@@ -124,6 +125,22 @@ group_galaxy_config:
     log_level: TRACE
     new_file_path: "{{ galaxy_tmp_dir }}"
     job_working_directory: "{{ galaxy_tmp_dir }}/job_working_directory"
+<<<<<<< HEAD
+=======
+
+    # host specific settings
+    admin_users: "{{ __galaxy_config['galaxy']['admin_users']}}"
+    brand: "{{ __galaxy_config['galaxy']['brand']}}"
+    database_connection: "{{ __galaxy_config['galaxy']['database_connection']}}"
+    id_secret: "{{ __galaxy_config['galaxy']['id_secret']}}"
+    file_path: "{{ __galaxy_config['galaxy']['file_path']}}"
+    galaxy_infrastructure_url: "{{ __galaxy_config['galaxy']['galaxy_infrastructure_url'] }}"
+    enable_oidc: "{{ __galaxy_config['galaxy']['enable_oidc'] }}"
+    object_store_config_file: "{{ __galaxy_config['galaxy']['object_store_config_file']|default(omit) }}"
+    smtp_server: "{{ __galaxy_config['galaxy']['smtp_server']|default(omit) }}"
+    ga_code: "{{ __galaxy_config['galaxy']['ga_code']|default(omit) }}"
+
+>>>>>>> First commit (drop me?) to reinstate oidc because this will be tested initially on dev
     allow_user_impersonation: true
     allow_user_deletion: true
     allow_path_paste: true
@@ -185,16 +202,19 @@ group_galaxy_config:
     statsd_port: 8125
     statsd_prefix: galaxy-aust
     
+    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
+    builds_file_path: /cvmfs/data.galaxyproject.org/managed/location/builds.txt
+    build_sites_config_file: "{{ galaxy_config_dir }}/build_sites.yml"
+    enable_old_display_applications: true
+
+    oidc_config_file: "{{ galaxy_config_dir }}/oidc_config.xml"
+    oidc_backends_config_file: "{{ galaxy_config_dir }}/oidc_backends_config.xml"
 
     # amqp_internal_connection: 'pyamqp://galaxy_internal:more_queues@localhost:5672/galaxy_internal' # this needs configuration
 
     # data_manager_config_file: /mnt/galaxy-app/config/data_manager_conf.xml.sample  # should we be templating these?
     
     # migrated_tools_config: /mnt/galaxy/var/migrated_tools_conf.xml
-    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
-    builds_file_path: /cvmfs/data.galaxyproject.org/managed/location/builds.txt
-    build_sites_config_file: "{{ galaxy_config_dir }}/build_sites.yml"
-    enable_old_display_applications: true
     # datatypes_config_file: /mnt/galaxy-app/config/datatypes_conf.xml
 
     # interactive_environment_plugins_directory: config/plugins/interactive_environments
@@ -219,15 +239,6 @@ group_galaxy_config:
     # len_file_path: /mnt/galaxy-app/tool-data/len
     #
     
-    #########################################
-    # Commented out by Simon - 22/03/2021.
-    # Requires more testing before being used in production - team meeting 22/03/2021.
-    # Once it's added to production it's no longer an issue.
-    # 
-    #########################################
-    #enable_oidc: true
-    #oidc_config_file: "{{ galaxy_config_dir }}/oidc_config.xml"
-    #oidc_backends_config_file: "{{ galaxy_config_dir }}/oidc_backends_config.xml"
 
 galaxy_config_template_src_dir: templates/galaxy
 galaxy_config_templates:
@@ -237,8 +248,8 @@ galaxy_config_templates:
     dest: "{{ galaxy_config_dir}}/job_conf.xml"
   - src: "{{ galaxy_config_template_src_dir }}/config/reports.yml.j2"
     dest: "{{ galaxy_config_dir }}/reports.yml"
-  #- src: "{{ galaxy_config_template_src_dir }}/config/oidc_backends_config.xml.j2"
-  #  dest: "{{ galaxy_config_dir}}/oidc_backends_config.xml"
+  - src: "{{ galaxy_config_template_src_dir }}/config/oidc_backends_config.xml.j2"
+    dest: "{{ galaxy_config_dir}}/oidc_backends_config.xml"
 
 galaxy_config_file_src_dir: files/galaxy
 galaxy_config_files:
@@ -256,8 +267,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config['galaxy']['user_preferences_extra_conf_path'] }}"
   - src: "{{ galaxy_config_file_src_dir }}/config/build_sites.yml"
     dest: "{{ galaxy_config_dir }}/build_sites.yml"
-  #- src: "{{ galaxy_config_file_src_dir }}/config/oidc_config.xml"
-  #  dest: "{{ galaxy_config_dir}}/oidc_config.xml"
+  - src: "{{ galaxy_config_file_src_dir }}/config/oidc_config.xml"
+    dest: "{{ galaxy_config_dir}}/oidc_config.xml"
 
 # galaxy_config is the combination of group_galaxy_config and host_galaxy_config.  For any variable
 # defined in both group_galaxy_config and host_galaxy_config the value from host_galaxy_config will
