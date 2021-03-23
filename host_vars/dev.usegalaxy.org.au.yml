@@ -32,6 +32,11 @@ host_galaxy_config:  # renamed from __galaxy_config
     id_secret: "{{ vault_dev_id_secret }}"
     file_path: "{{ galaxy_root }}/data"
     galaxy_infrastructure_url: 'https://dev.usegalaxy.org.au'
+    nginx_upload_store: '/data/dnb01/nginx-galaxy/uploads'
+    nginx_upload_path: '/_upload'
+    nginx_upload_job_files_store: '/upload_store/job_files'
+    nginx_upload_job_files_path: '/_job_files'
+
 
 galaxy_handler_count: 2   ############# europe uses 5, this could be host specific
 
@@ -125,6 +130,11 @@ galaxy_jobconf:
 galaxyserver_attached_volume_device: /dev/vdb
 galaxyserver_attached_volume_path: /mnt
 galaxyserver_attached_volume_fstype: ext4
+
+# variables for attaching upload store volume to application server
+uploadstore_attached_volume_device: /dev/vdc
+uploadstore_attached_volume_path: /upload_store
+uploadstore_attached_volume_fstype: ext4
 
 # cvmfs
 cvmfs_cache_base: /mnt/var/lib/cvmfs
