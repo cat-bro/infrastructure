@@ -137,6 +137,10 @@ group_galaxy_config:
     file_path: "{{ __galaxy_config['galaxy']['file_path']}}"
     galaxy_infrastructure_url: "{{ __galaxy_config['galaxy']['galaxy_infrastructure_url'] }}"
     enable_oidc: "{{ __galaxy_config['galaxy']['enable_oidc'] }}"
+    nginx_upload_store: "{{ __galaxy_config['galaxy']['nginx_upload_store']|default(omit) }}"  # TODO: this is bad, need to sort out host/group vars problem
+    nginx_upload_path: "{{ __galaxy_config['galaxy']['nginx_upload_path']|default(omit) }}"  # TODO: this is bad
+    nginx_upload_job_files_store: "{{ __galaxy_config['galaxy']['nginx_upload_job_files_store']|default(omit) }}"  # TODO: this is bad
+    nginx_upload_job_files_path: "{{ __galaxy_config['galaxy']['nginx_upload_job_files_path']|default(omit) }}"  # TODO: this is bad
     object_store_config_file: "{{ __galaxy_config['galaxy']['object_store_config_file']|default(omit) }}"
     smtp_server: "{{ __galaxy_config['galaxy']['smtp_server']|default(omit) }}"
     ga_code: "{{ __galaxy_config['galaxy']['ga_code']|default(omit) }}"
