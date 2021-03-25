@@ -22,49 +22,38 @@
           attached_volume_device: "{{ uploadstore_attached_volume_device }}"
           attached_volume_fstype: "{{ uploadstore_attached_volume_fstype }}"
           attached_volume_path: "{{ uploadstore_attached_volume_path }}"
-  #   - name: Attach volume to instance
-  #     # If this script is being run for the first time, review the value of galaxyserver_attached_volume_device in group_vars
-  #     block: # TODO: This is pretty generic code for attaching a volume to a device and should probably live in another file to be reused
-  #       - name: Detect attached volume
-  #         parted:
-  #           device: "{{ galaxyserver_attached_volume_device }}"
-  #           unit: GiB
-  #         register: volume_info
-  #       - name: Create a filesystem on volume
-  #         filesystem:
-  #           fstype: "{{ galaxyserver_attached_volume_fstype }}"
-  #           dev: "{{ galaxyserver_attached_volume_device }}"
-  #         when: volume_info.disk is defined and volume_info.disk.dev is defined and volume_info.disk.dev == galaxyserver_attached_volume_device
-  #       - name: Mount volume
-  #         mount:
-  #           path: "{{ galaxyserver_attached_volume_path }}"
-  #           src: "{{ galaxyserver_attached_volume_device }}"
-  #           fstype: "{{ galaxyserver_attached_volume_fstype }}"
-  #           state: mounted
-  #     when: galaxyserver_attached_volume_device is defined
+      # - name: Ensure that upload_store directories exist  # Probably not needed, #TODO delete these dirs and make sure it still works
+      #   file:
+      #       path: "{{ item }}"
+      #       state: directory
+      #       owner: root  # galaxy might not exist
+      #       group: root
+      #       mode: '755'  # if this does not work, 777?
+      #   with_items:
+      #     - "{{ nginx_upload_store_dir }}"
+      #     - "{{ nginx_upload_job_files_store_dir }}"
   handlers:
     - name: Restart Galaxy
       systemd:
         name: galaxy
         state: restarted
   roles:
-    - role: set-up-volume
-    - galaxyproject.repos
+    # - galaxyproject.repos
     - common
-    - galaxyproject.postgresql
-    - role: natefoo.postgresql_objects
-      become: true
-      become_user: postgres
-    - geerlingguy.pip
-    - galaxyproject.galaxy
-    - usegalaxy_eu.galaxy_systemd
+    # - galaxyproject.postgresql
+    # - role: natefoo.postgresql_objects
+    #   become: true
+    #   become_user: postgres
+    # - geerlingguy.pip
+    # - galaxyproject.galaxy
+    # - usegalaxy_eu.galaxy_systemd
     - galaxyproject.nginx
-    - geerlingguy.nfs
-    - galaxyproject.slurm
-    - galaxyproject.cvmfs
-    - usegalaxy_eu.gxadmin
-    - pg-post-tasks
-    - usegalaxy_eu.tiaas2
+    # - geerlingguy.nfs
+    # - galaxyproject.slurm
+    # - galaxyproject.cvmfs
+    # - usegalaxy_eu.gxadmin
+    # - pg-post-tasks
+    # - usegalaxy_eu.tiaas2
   post_tasks:
     - name: Clone Galaxy-Owncloud-Integration
       git:
@@ -79,3 +68,4 @@
       command: exportfs -ra
       become: yes
       become_user: root
+
