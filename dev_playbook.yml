@@ -32,6 +32,10 @@
       #   with_items:
       #     - "{{ nginx_upload_store_dir }}"
       #     - "{{ nginx_upload_job_files_store_dir }}"
+      # - name: 'hello ppa'
+      #   apt_repository:
+      #     repo: deb http://ppa.launchpad.net/galaxyproject/nginx/ubuntu focal main
+      #     update_cache: no
   handlers:
     - name: Restart Galaxy
       systemd:
