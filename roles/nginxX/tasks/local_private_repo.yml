@@ -1,0 +1,36 @@
+# $ mkdir /opt/deb
+# $ echo "deb file:/opt deb/" > /etc/apt/sources.list.d/local.list
+
+# - name: make space
+#   file:
+#     path: /opt/deb
+#     state: directory
+
+# - name: add opt deb to sources list
+#   lineinfile:
+#     path: /etc/apt/sources.list.d/local.list
+#     line: deb [trusted=yes] file:/opt deb/
+#     create: true
+
+# - name: move the file (should be getting from a repo)
+#   shell: mv /var/ansible/build-module-artifacts/nginx-module-uploadmodule_1.18.0-1~focal_amd64.deb /opt/deb/
+
+# - name: Update the package manager to be aware of the dynamic module package
+#   shell: dpkg-scanpackages deb | gzip > deb/Packages.gz
+#   args:
+#     chdir: /opt
+
+- name: install module
+  apt:
+    name: nginx-module-uploadmodule
+    update_cache: true
+
+
+
+
+# $ apt-get update
+
+# - name: Change the working directory to somedir/ before executing the command
+#   ansible.builtin.shell: somescript.sh >> somelog.txt
+#   args:
+#     chdir: somedir/

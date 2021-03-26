@@ -1,14 +1,23 @@
 - hosts: cat_server
   become: true
   vars:
-   - galaxy_repo: https://github.com/cat-bro/galaxy.git
-   - galaxy_commit_id: handle_invalid_tags
+    - galaxy_repo: https://github.com/cat-bro/galaxy.git
+    - galaxy_commit_id: handle_invalid_tags
+    - nginx_upload_store_dir: /upload_store/uploads
+    - nginx_upload_job_files_store_dir: /upload_store/job_files
+    # for nginx template
+    - galaxy_job_working_directory: "{{ __galaxy_job_working_directory}}"
+    - galaxy_tool_dependency_dir: "{{ __galaxy_tool_dependency_dir}}"
+    - galaxy_venv_dir: "{{ __galaxy_venv_dir}}"
+    - galaxy_file_path: "{{ __galaxy_file_path}}"
   vars_files:
       - group_vars/all.yml
       # - group_vars/VAULT
       - group_vars/galaxyservers.yml
       # - group_vars/dev_slurm.yml
       - host_vars/dev.usegalaxy.org.au.yml
+      - roles/galaxyproject.galaxy/defaults/main.yml
+      - roles/galaxyproject.galaxy/vars/layout-root-dir.yml
   pre_tasks:
     # - name: Attach volume to instance
     #   # If this script is being run for the first time, review the value of galaxyserver_attached_volume_device in group_vars
@@ -30,13 +39,23 @@
     #         fstype: "{{ galaxyserver_attached_volume_fstype }}"
     #         state: mounted
     #   when: galaxyserver_attached_volume_device is defined
+      - name: Ensure that upload_store directories exist  # Probably not needed, #TODO delete these dirs and make sure it still works
+        file:
+            path: "{{ item }}"
+            state: directory
+            owner: root  # galaxy might not exist
+            group: root
+            mode: '755'  # if this does not work, 777?
+        with_items:
+          - "{{ nginx_upload_store_dir }}"
+          - "{{ nginx_upload_job_files_store_dir }}"
   handlers:
     - name: Restart Galaxy
       systemd:
         name: galaxy
         state: restarted
   roles:
-    - tiny-git
+    # - tiny-git
     # - galaxyproject.repos
     # - common
     # - galaxyproject.postgresql
@@ -44,9 +63,10 @@
     #   become: true
     #   become_user: postgres
     # - geerlingguy.pip
-    # - galaxyproject.galaxy
+    - galaxyproject.galaxy
     # - usegalaxy_eu.galaxy_systemd
     # - galaxyproject.nginx
+    # - nginxX
     # - geerlingguy.nfs
     # # - galaxyproject.slurm
 
@@ -63,3 +83,11 @@
     #   command: exportfs -ra
     #   become: yes
     #   become_user: root
+    - name: Copy nginx template in absence of role
+      template:
+        src: "templates/nginx/galaxy.j2"
+        dest: "/etc/nginx/galaxy"
+        mode: 0744
+
+
+

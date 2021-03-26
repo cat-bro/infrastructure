@@ -1,0 +1,94 @@
+# Install the prerequisites:
+
+# sudo apt install curl gnupg2 ca-certificates lsb-release
+
+# - name: get lsb release
+#   shell: echo `lsb_release -cs`
+#   register: lsb_release
+
+# - name: debug
+#   debug: 
+#     msg: "deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx"
+
+
+# - name: Install the prerequisites
+#   apt:
+#       name: ['curl', 'gnupg2', 'ca-certificates', 'lsb-release']
+#       state: present
+#
+# - name: 'To set up the apt repository for stable nginx packages, run the following command'
+#   # shell: 'echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" | sudo tee /etc/apt/sources.list.d/nginx.list'
+#   lineinfile:
+#     path: /etc/apt/sources.list.d/nginx.list
+#     line: deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx
+#     create: true
+
+# # - name: 'Set up repository pinning to prefer our packages over distribution-provided ones'
+# #   lineinfile:
+# #     path: /etc/apt/preferences.d/99nginx
+# #     line: Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority
+
+# - name: 'Next, import an official nginx signing key so apt could verify the packages authenticity. Fetch the key:'
+#   shell: curl -o /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key
+
+# - name: Make sure the gpg home directory exists (it should just exist!  why does it not?)
+#   file:
+#     path: /root/.gnupg
+#     state: directory
+
+# - name: Verify that the downloaded file contains the proper key
+#   shell: gpg --dry-run --quiet --import --import-options show-only /tmp/nginx_signing.key
+#   register: show_key_result
+
+# - name: Print the key, we need a condition to compare show_key_result but at the moment just debug
+#   debug:
+#     msg: "{{ show_key_result }}"
+
+# - name: Finally, move the key to apt trusted key storage (note the asc file extension change)
+#   shell: mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc
+
+# - name: Install nginx
+#   apt:
+#       name: nginx="{{ nginx_version }}"
+#       state: latest # will this work?
+#       update_cache: true
+
+# - name: import tasks
+#   import_tasks: build_module.yml
+
+- name: import tasks
+  import_tasks: local_private_repo.yml
+
+# # To set up the apt repository for stable nginx packages, run the following command:
+
+# # echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
+# #     | sudo tee /etc/apt/sources.list.d/nginx.list
+# If you would like to use mainline nginx packages, run the following command instead:
+
+# echo "deb http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
+#     | sudo tee /etc/apt/sources.list.d/nginx.list
+# Set up repository pinning to prefer our packages over distribution-provided ones:
+
+# echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+#     | sudo tee /etc/apt/preferences.d/99nginx
+# Next, import an official nginx signing key so apt could verify the packages authenticity. Fetch the key:
+
+# curl -o /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key
+# Verify that the downloaded file contains the proper key:
+
+# gpg --dry-run --quiet --import --import-options show-only /tmp/nginx_signing.key
+# Note: on Ubuntu 16.04, use the following command instead:
+
+# gpg --with-fingerprint /tmp/nginx_signing.key
+# The output should contain the full fingerprint 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 as follows:
+
+# pub   rsa2048 2011-08-19 [SC] [expires: 2024-06-14]
+#       573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+# uid                      nginx signing key <signing-key@nginx.com>
+# Finally, move the key to apt trusted key storage (note the "asc" file extension change):
+
+# sudo mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc
+# To install nginx, run the following commands:
+
+# sudo apt update
+# sudo apt install nginx

@@ -1,0 +1,37 @@
+- name: Establish nginx version
+  shell: echo "$(nginx -v 2>&1 | cut -d '/' -f 2)"  # note this must use shell rather than command
+  register: nginx_version
+
+# - name: debug
+#   debug:
+#     msg: "{{ nginx_version.stdout }}"
+
+- name: Make a directory for these goings on
+  file:
+    path: /var/ansible
+    state: directory
+
+# - name: Download build_module.sh script
+#   get_url:
+#     url: https://hg.nginx.org/pkg-oss/raw-file/default/build_module.sh
+#     dest: /var/ansible
+#     mode: 744
+
+# - name: Download the upload module
+#   get_url:
+#     url: https://github.com/vkholodkov/nginx-upload-module/archive/refs/tags/2.3.0.tar.gz
+#     dest: /var/ansible/
+#     mode: 400
+
+# - name: unzip the module  # TODO: use unarchive ansible module
+#   command:
+#     cmd: "tar -xvf nginx-upload-module-2.3.0.tar.gz"
+#     chdir: /var/ansible
+- name: check command is sound
+  debug:
+    msg: "./build_module.sh -n uploadmodule -y -v {{ nginx_version.stdout }} nginx-upload-module-2.3.0"
+
+- name: build the module  # note that this script installs modules and overwrites files, hence is innappropriate for use in a production environment
+  command: # -n uploadmodule, -n must be lowercase alphanumeric, could make this a parameter
+    cmd: "./build_module.sh -n uploadmodule -y -v {{ nginx_version.stdout }} nginx-upload-module-2.3.0"
+    chdir: /var/ansible
