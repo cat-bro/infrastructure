@@ -1,0 +1,9 @@
+nginx_version: 1.18.0
+
+nginx_prebuilt_module_url: https://swift.rc.nectar.org.au:8888/v1/AUTH_377/public/nginx-module-uploadmodule_1.18.0-1~focal_amd64.deb
+nginx_prebuild_module_name: "{{ nginx-module-uploadmodule }}"
+
+# build_module.yml variables
+nginx_build_module_dir: /var/ansible
+nginx_module_source_url: https://github.com/vkholodkov/nginx-upload-module/archive/refs/tags/2.3.0.tar.gz
+nginx_module_nickname: uploadmodule  # must be lowercase alphanumeric

@@ -1,0 +1,29 @@
+---
+# Use script cited in https://www.nginx.com/blog/creating-installable-packages-dynamic-modules/
+# Because this script might download packages and make changes on the system it should not
+# be run in a production environment.  The built module can be imported to a production
+# environment.
+
+- name: Make a directory for build operations
+  file:
+    path: "{{ nginx_build_module_dir }}"
+    state: directory
+
+- name: Download build_module.sh script
+  get_url:
+    url: https://hg.nginx.org/pkg-oss/raw-file/default/build_module.sh
+    dest: "{{ nginx_build_module_dir }}"
+    mode: 744
+
+- name: Download and unzip module source code
+  ansible.builtin.unarchive:
+    src: "{{ nginx_module_source_url }}"
+    dest: "{{ nginx_build_module_dir }}/"
+    list_files: true
+    remote_src: true
+  register: module_download
+
+- name: build the module
+  command:
+    cmd: "./build_module.sh -n {{ nginx_module_nickname }} -y -v {{ nginx_version }} {{ module_download.files | first | replace('/', '') }}"
+    chdir: "{{ nginx_build_module_dir }}"
