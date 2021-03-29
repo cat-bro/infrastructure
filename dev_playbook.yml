@@ -22,42 +22,37 @@
           attached_volume_device: "{{ uploadstore_attached_volume_device }}"
           attached_volume_fstype: "{{ uploadstore_attached_volume_fstype }}"
           attached_volume_path: "{{ uploadstore_attached_volume_path }}"
-      # - name: Ensure that upload_store directories exist  # Probably not needed, #TODO delete these dirs and make sure it still works
-      #   file:
-      #       path: "{{ item }}"
-      #       state: directory
-      #       owner: root  # galaxy might not exist
-      #       group: root
-      #       mode: '755'  # if this does not work, 777?
-      #   with_items:
-      #     - "{{ nginx_upload_store_dir }}"
-      #     - "{{ nginx_upload_job_files_store_dir }}"
-      # - name: 'hello ppa'
-      #   apt_repository:
-      #     repo: deb http://ppa.launchpad.net/galaxyproject/nginx/ubuntu focal main
-      #     update_cache: no
+      - name: Ensure that upload_store directories exist
+        file:
+            path: "{{ item }}"
+            state: directory
+            mode: '755'  # if this does not work, 777?
+        with_items:
+          - "{{ nginx_upload_store_dir }}"
+          - "{{ nginx_upload_job_files_store_dir }}"
   handlers:
     - name: Restart Galaxy
       systemd:
         name: galaxy
         state: restarted
   roles:
-    # - galaxyproject.repos
+    - galaxyproject.repos
     - common
-    # - galaxyproject.postgresql
-    # - role: natefoo.postgresql_objects
-    #   become: true
-    #   become_user: postgres
-    # - geerlingguy.pip
-    # - galaxyproject.galaxy
-    # - usegalaxy_eu.galaxy_systemd
+    - galaxyproject.postgresql
+    - role: natefoo.postgresql_objects
+      become: true
+      become_user: postgres
+    - geerlingguy.pip
+    - galaxyproject.galaxy
+    - usegalaxy_eu.galaxy_systemd
+    - nginx-with-dynamic-module
     - galaxyproject.nginx
-    # - geerlingguy.nfs
-    # - galaxyproject.slurm
-    # - galaxyproject.cvmfs
-    # - usegalaxy_eu.gxadmin
-    # - pg-post-tasks
-    # - usegalaxy_eu.tiaas2
+    - geerlingguy.nfs
+    - galaxyproject.slurm
+    - galaxyproject.cvmfs
+    - usegalaxy_eu.gxadmin
+    - pg-post-tasks
+    - usegalaxy_eu.tiaas2
   post_tasks:
     - name: Clone Galaxy-Owncloud-Integration
       git:
