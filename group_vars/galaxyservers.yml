@@ -127,26 +127,6 @@ group_galaxy_config:
     log_level: TRACE
     new_file_path: "{{ galaxy_tmp_dir }}"
     job_working_directory: "{{ galaxy_tmp_dir }}/job_working_directory"
-<<<<<<< HEAD
-=======
-
-    # host specific settings
-    admin_users: "{{ __galaxy_config['galaxy']['admin_users']}}"
-    brand: "{{ __galaxy_config['galaxy']['brand']}}"
-    database_connection: "{{ __galaxy_config['galaxy']['database_connection']}}"
-    id_secret: "{{ __galaxy_config['galaxy']['id_secret']}}"
-    file_path: "{{ __galaxy_config['galaxy']['file_path']}}"
-    galaxy_infrastructure_url: "{{ __galaxy_config['galaxy']['galaxy_infrastructure_url'] }}"
-    enable_oidc: "{{ __galaxy_config['galaxy']['enable_oidc'] }}"
-    nginx_upload_store: "{{ __galaxy_config['galaxy']['nginx_upload_store']|default(omit) }}"  # TODO: this is bad, need to sort out host/group vars problem
-    nginx_upload_path: "{{ __galaxy_config['galaxy']['nginx_upload_path']|default(omit) }}"  # TODO: this is bad
-    nginx_upload_job_files_store: "{{ __galaxy_config['galaxy']['nginx_upload_job_files_store']|default(omit) }}"  # TODO: this is bad
-    nginx_upload_job_files_path: "{{ __galaxy_config['galaxy']['nginx_upload_job_files_path']|default(omit) }}"  # TODO: this is bad
-    object_store_config_file: "{{ __galaxy_config['galaxy']['object_store_config_file']|default(omit) }}"
-    smtp_server: "{{ __galaxy_config['galaxy']['smtp_server']|default(omit) }}"
-    ga_code: "{{ __galaxy_config['galaxy']['ga_code']|default(omit) }}"
-
->>>>>>> First commit (drop me?) to reinstate oidc because this will be tested initially on dev
     allow_user_impersonation: true
     allow_user_deletion: true
     allow_path_paste: true
