@@ -1,40 +1,36 @@
-# Install the prerequisites:
+---
+- name: get lsb release  # ubuntu release name i.e. bionic, focal, xenial
+  shell: echo `lsb_release -cs`
+  register: lsb_release
 
-# sudo apt install curl gnupg2 ca-certificates lsb-release
+- name: Install the prerequisites
+  apt:
+      name: ['curl', 'gnupg2', 'ca-certificates', 'lsb-release']
+      state: present
 
-# - name: get lsb release
-#   shell: echo `lsb_release -cs`
-#   register: lsb_release
+- name: 'To set up the apt repository for stable nginx packages, run the following command'
+  lineinfile:
+    path: /etc/apt/sources.list.d/nginx.list
+    line: deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx
+    create: true
 
-# - name: debug
-#   debug: 
-#     msg: "deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx"
-
-
-# - name: Install the prerequisites
-#   apt:
-#       name: ['curl', 'gnupg2', 'ca-certificates', 'lsb-release']
-#       state: present
-#
-# - name: 'To set up the apt repository for stable nginx packages, run the following command'
-#   # shell: 'echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" | sudo tee /etc/apt/sources.list.d/nginx.list'
-#   lineinfile:
-#     path: /etc/apt/sources.list.d/nginx.list
-#     line: deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx
-#     create: true
-
-# # - name: 'Set up repository pinning to prefer our packages over distribution-provided ones'
-# #   lineinfile:
-# #     path: /etc/apt/preferences.d/99nginx
-# #     line: Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority
+- name: Set up repository pinning to prefer official nginx packages over distribution-provided ones
+  blockinfile:
+    path: /etc/apt/preferences.d/99nginx
+    block: "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority"
 
 # - name: 'Next, import an official nginx signing key so apt could verify the packages authenticity. Fetch the key:'
 #   shell: curl -o /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key
 
-# - name: Make sure the gpg home directory exists (it should just exist!  why does it not?)
-#   file:
-#     path: /root/.gnupg
-#     state: directory
+- name: 'Import an official nginx signing key so apt could verify the package authenticity'
+  get_url:
+    url: https://nginx.org/keys/nginx_signing.key
+    dest: /tmp/nginx_signing.key
+
+- name: Make sure the gpg home directory exists
+  file:
+    path: /root/.gnupg
+    state: directory
 
 # - name: Verify that the downloaded file contains the proper key
 #   shell: gpg --dry-run --quiet --import --import-options show-only /tmp/nginx_signing.key
@@ -44,20 +40,19 @@
 #   debug:
 #     msg: "{{ show_key_result }}"
 
-# - name: Finally, move the key to apt trusted key storage (note the asc file extension change)
-#   shell: mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc
+- name: Move the key to apt trusted key storage (note the asc file extension change)
+  shell: mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc
 
-# - name: Install nginx
-#   apt:
-#       name: nginx="{{ nginx_version }}"
-#       state: latest # will this work?
-#       update_cache: true
+- name: Install nginx
+  apt:
+      name: nginx="{{ nginx_version }}"
+      update_cache: true
 
 # - name: import tasks
 #   import_tasks: build_module.yml
 
 - name: import tasks
-  import_tasks: local_private_repo.yml
+  import_tasks: install_module.yml
 
 # # To set up the apt repository for stable nginx packages, run the following command:
 

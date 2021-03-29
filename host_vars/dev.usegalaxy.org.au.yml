@@ -20,7 +20,7 @@ galaxy_jobconf:
         workers: 4
       - id: slurm
         load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    default_destination: "slurm_dest"
+    default_destination: local
     destinations:
       - id: local
         runner: local

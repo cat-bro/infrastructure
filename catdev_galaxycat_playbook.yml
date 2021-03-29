@@ -2,14 +2,14 @@
   become: true
   vars:
     - galaxy_repo: https://github.com/cat-bro/galaxy.git
-    - galaxy_commit_id: handle_invalid_tags
+    - galaxy_commit_id: nginx_upload_logging
     - nginx_upload_store_dir: /upload_store/uploads
     - nginx_upload_job_files_store_dir: /upload_store/job_files
     # for nginx template
-    - galaxy_job_working_directory: "{{ __galaxy_job_working_directory}}"
-    - galaxy_tool_dependency_dir: "{{ __galaxy_tool_dependency_dir}}"
-    - galaxy_venv_dir: "{{ __galaxy_venv_dir}}"
-    - galaxy_file_path: "{{ __galaxy_file_path}}"
+    # - galaxy_job_working_directory: "{{ __galaxy_job_working_directory}}"
+    # - galaxy_tool_dependency_dir: "{{ __galaxy_tool_dependency_dir}}"
+    # - galaxy_venv_dir: "{{ __galaxy_venv_dir}}"
+    # - galaxy_file_path: "{{ __galaxy_file_path}}"
   vars_files:
       - group_vars/all.yml
       # - group_vars/VAULT
@@ -39,16 +39,16 @@
     #         fstype: "{{ galaxyserver_attached_volume_fstype }}"
     #         state: mounted
     #   when: galaxyserver_attached_volume_device is defined
-      - name: Ensure that upload_store directories exist  # Probably not needed, #TODO delete these dirs and make sure it still works
-        file:
-            path: "{{ item }}"
-            state: directory
-            owner: root  # galaxy might not exist
-            group: root
-            mode: '755'  # if this does not work, 777?
-        with_items:
-          - "{{ nginx_upload_store_dir }}"
-          - "{{ nginx_upload_job_files_store_dir }}"
+      # - name: Ensure that upload_store directories exist  # Probably not needed, #TODO delete these dirs and make sure it still works
+      #   file:
+      #       path: "{{ item }}"
+      #       state: directory
+      #       owner: galaxy  # galaxy might not exist
+      #       group: galaxy
+      #       mode: '755'  # if this does not work, 777?
+      #   with_items:
+      #     - "{{ nginx_upload_store_dir }}"
+      #     - "{{ nginx_upload_job_files_store_dir }}"
   handlers:
     - name: Restart Galaxy
       systemd:
@@ -63,19 +63,19 @@
     #   become: true
     #   become_user: postgres
     # - geerlingguy.pip
-    - galaxyproject.galaxy
+    # - galaxyproject.galaxy
     # - usegalaxy_eu.galaxy_systemd
     # - galaxyproject.nginx
-    # - nginxX
+    - nginxX
     # - geerlingguy.nfs
     # # - galaxyproject.slurm
 
-  post_tasks:
-    - name: Let anybody make changes to the server directory
-      file:
-        path: "{{ galaxy_server_dir }}"
-        mode: 0777
-        recurse: yes
+  # post_tasks:
+  #   - name: Let anybody make changes to the server directory
+  #     file:
+  #       path: "{{ galaxy_server_dir }}"
+  #       mode: 0777
+  #       recurse: yes
     # - name: Install slurm-drmaa
     #   package:
     #     name: slurm-drmaa1
@@ -83,11 +83,11 @@
     #   command: exportfs -ra
     #   become: yes
     #   become_user: root
-    - name: Copy nginx template in absence of role
-      template:
-        src: "templates/nginx/galaxy.j2"
-        dest: "/etc/nginx/galaxy"
-        mode: 0744
+    # - name: Copy nginx template in absence of role
+    #   template:
+    #     src: "templates/nginx/galaxy.j2"
+    #     dest: "/etc/nginx/sites-available/galaxy"
+    #     mode: 0744
 
 
 
