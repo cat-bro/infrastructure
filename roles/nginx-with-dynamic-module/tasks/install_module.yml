@@ -36,6 +36,7 @@
     path_to_module: "{{ module_installed_result.stdout | regex_search(regexp,'\\1') }}"
   vars:
     regexp: 'load_module ([^\s;]*)'
+  when: module_installed_result.changed
 
 - name: Add line to enable module in nginx conf
   lineinfile:
@@ -43,4 +44,4 @@
     firstmatch: true
     path: /etc/nginx/nginx.conf
     line: 'load_module {{ path_to_module }};'
-  when: path_to_module != ''
+  when: path_to_module|d('') != ''
