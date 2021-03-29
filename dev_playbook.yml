@@ -26,7 +26,7 @@
         file:
             path: "{{ item }}"
             state: directory
-            mode: '755'  # if this does not work, 777?
+            mode: '755'
         with_items:
           - "{{ nginx_upload_store_dir }}"
           - "{{ nginx_upload_job_files_store_dir }}"
