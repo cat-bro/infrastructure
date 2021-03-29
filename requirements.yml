@@ -1,7 +1,8 @@
 - name: galaxyproject.galaxy
   version: 0.9.11
 - name: galaxyproject.nginx
-  version: 0.6.4
+  src: https://github.com/usegalaxy-au/ansible-nginx
+  version: origin/skip_apt_install
 - name: galaxyproject.postgresql
   version: 1.0.3
 - name: natefoo.postgresql_objects
