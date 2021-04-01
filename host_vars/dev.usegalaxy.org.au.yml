@@ -165,3 +165,6 @@ aaf_client_secret: "{{ vault_aaf_client_secret_dev }}"
 # Upload store directories
 nginx_upload_store_dir: "{{ uploadstore_attached_volume_path }}/uploads"
 nginx_upload_job_files_store_dir: "{{ uploadstore_attached_volume_path }}/job_files"
+
+# galaxyproject.nginx
+nginx_skip_install: true
