@@ -8,7 +8,7 @@
       name: ['curl', 'gnupg2', 'ca-certificates', 'lsb-release']
       state: present
 
-- name: 'To set up the apt repository for stable nginx packages, run the following command'
+- name: Set up the apt repository for stable nginx packages
   lineinfile:
     path: /etc/apt/sources.list.d/nginx.list
     line: deb [trusted=yes] http://nginx.org/packages/ubuntu {{ lsb_release.stdout }} nginx nginx
@@ -20,7 +20,7 @@
 #     line: "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority"
 #     create: true
 
-- name: 'Import an official nginx signing key so apt could verify the package authenticity'
+- name: Import an official nginx signing key so apt can verify the package authenticity
   get_url:
     url: https://nginx.org/keys/nginx_signing.key
     dest: /tmp/nginx_signing.key
@@ -30,7 +30,7 @@
     path: /root/.gnupg
     state: directory
 
-- name: Move the key to apt trusted key storage (note the asc file extension change)
+- name: Move the key to apt trusted key storage
   shell: mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc
 
 - name: Register current nginx version
@@ -43,11 +43,11 @@
       update_cache: true
   when: installed_nginx_version.stdout != nginx_version  # we need to prevent any surprise updates
 
+- name: Add the nginx user to galaxy's group  # assuming this user already exists
+  user:
+    name: www-data
+    groups:
+     - galaxy
+
 - name: Install dynamic module
   import_tasks: install_module.yml
-
-- name: Ensure nginx_conf_user is the user in nginx conf
-  replace:
-      path: /etc/nginx/nginx.conf
-      regexp: '^user www-data;$'
-      replace: 'user {{ nginx_conf_user }};'

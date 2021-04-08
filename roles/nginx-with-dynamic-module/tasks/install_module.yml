@@ -27,10 +27,6 @@
     update_cache: true
   register: module_installed_result
 
-- name: debug
-  debug:
-    msg: "{{ module_installed_result }}"
-
 - name: Extract module path from install result
   set_fact:
     path_to_module: "{{ module_installed_result.stdout | regex_search(regexp,'\\1') }}"
