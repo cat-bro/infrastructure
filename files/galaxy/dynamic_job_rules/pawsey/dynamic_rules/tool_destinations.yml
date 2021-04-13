@@ -37,7 +37,7 @@ tools:
             nice_value: 0
             lower_bound: 15 MB
             upper_bound: 2 GB
-            destination: pulsar-mel3_small
+            destination: pulsar-mel_small
           - rule_type: file_size
             nice_value: 0
             lower_bound: 2 GB
@@ -471,11 +471,11 @@ tools:
             - rule_type: file_size
               nice_value: 0
               lower_bound: 100 MB
-              upper_bound: 9 GB
-              destination: pulsar-mel3_mid
+              upper_bound: 5 GB
+              destination: pulsar-mel_mid
             - rule_type: file_size
               nice_value: 0
-              lower_bound: 9 GB
+              lower_bound: 5 GB
               upper_bound: Infinity
               destination: pulsar-mel3_mid
         default_destination: slurm_5slots
