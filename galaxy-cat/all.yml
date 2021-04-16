@@ -1,0 +1,80 @@
+# append domain to ansible_hostname (from hosts file) for hostname variable
+hostname: "{{ ansible_hostname }}.genome.edu.au"
+
+#List of users to install and setup /homes for
+machine_users:
+    - name: cat
+      role: sudo
+      key: files/keys/catherine.pub
+      email: "{{ cat_email }}"
+    - name: joan
+      role: user
+      key: files/keys/catherine.pub
+      email: "{{ igor_email }}"
+    - name: jenkins_bot
+      role: sudo
+      key: files/keys/jenkins_bot.pub
+      email: "{{ jenkins_bot_email }}" # this is not a real email address and will cause issues if validation is required
+
+galaxy_user:
+  name: galaxy
+  shell: /bin/bash
+  uid: "{{ galaxy_uid }}"
+  group: galaxy
+  gid: "{{ galaxy_gid }}"
+
+#Common packages to install on all of our machines.
+common_packages:
+    - python-is-python3
+    - vim
+    - acl
+    - git
+    - build-essential
+    - python3-dev
+    - libcurl4-openssl-dev
+    - libgnutls28-dev
+    - libssl-dev
+    - python3-virtualenv
+    - python3-pip
+    - htop
+    - nfs-common
+    - atop
+    - speedometer
+    - byobu
+    - apt-transport-https
+    - tar
+    - bzip2
+    - libgl1-mesa-glx
+    - unzip
+    - tree
+    - python3-passlib
+
+#Set pip to be pip3 by default - see roles/geerlingguy.pip/defaults/main.yml
+pip_package: python3-pip
+
+# cvmfs
+cvmfs_role: client
+galaxy_cvmfs_repos_enabled: true
+
+galaxy_cvmfs_server_urls:
+  - domain: galaxyproject.org
+    use_geoapi: yes
+    urls:
+      - "http://cvmfs1-psu0.galaxyproject.org/cvmfs/@fqrn@"
+      - "http://cvmfs1-iu0.galaxyproject.org/cvmfs/@fqrn@"
+      - "http://cvmfs1-tacc0.galaxyproject.org/cvmfs/@fqrn@"
+      - "http://cvmfs1-mel0.gvl.org.au/cvmfs/@fqrn@"
+      - "http://cvmfs1-ufr0.galaxyproject.eu/cvmfs/@fqrn@"
+
+#sinfo and squeue configs
+bashrc_env: |
+  export SINFO_FORMAT="%16n %.12C %.6t"
+  export SQUEUE_FORMAT="%8i %9P %.35j %.9T %8r %19S %.10M %.6m %.3C %.3N %.55Z"
+  export SACCT_FORMAT="jobid%8,partition%9,jobname%30,alloccpus,elapsed,totalcpu,END,state,MaxRSS,ReqMem,NodeList"
+
+# Monitoring
+grafana_server_url: http://stats.genome.edu.au:8086
+
+telegraf_agent_package_state: latest
+telegraf_agent_package_method: repo
+telegraf_agent_hostname: "{{ inventory_hostname }}"

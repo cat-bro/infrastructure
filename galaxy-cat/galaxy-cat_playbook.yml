@@ -1,0 +1,50 @@
+- hosts: galaxy_cat
+  become: true
+  vars_files:
+      # - group_vars/all.yml
+      # - group_vars/dev.yml
+      # - group_vars/VAULT
+      - ../group_vars/galaxyservers.yml
+      # - group_vars/dev_slurm.yml
+      - galaxy-cat-vars.yml
+      - non-secret.yml
+      - all.yml # local all.yml file
+  vars:
+    galaxy_repo: https://github.com/usegalaxy-au/galaxy.git  # usegalaxy-au fork of galaxy
+    galaxy_commit_id: release_21.01_cloudstor
+  handlers:
+    - name: Restart Galaxy
+      systemd:
+        name: galaxy
+        state: restarted
+  roles:
+    - galaxyproject.repos
+    - common
+    - galaxyproject.postgresql
+    - role: natefoo.postgresql_objects
+      become: true
+      become_user: postgres
+    - geerlingguy.pip
+    - galaxyproject.galaxy
+    - usegalaxy_eu.galaxy_systemd
+    - galaxyproject.nginx
+    - geerlingguy.nfs
+    - galaxyproject.slurm
+    - galaxyproject.cvmfs
+    - usegalaxy_eu.gxadmin
+    - pg-post-tasks
+    # - usegalaxy_eu.tiaas2
+  post_tasks:
+    - name: Clone Galaxy-Owncloud-Integration
+      git:
+        repo: https://github.com/usegalaxy-au/Galaxy-Owncloud-Integration
+        dest: "{{ galaxy_server_dir }}/tools/Galaxy-Owncloud-Integration"
+        update: no
+      when: use_cloudstor_conf|d(false) == true
+    - name: Install slurm-drmaa
+      package:
+        name: slurm-drmaa1
+    - name: Reload exportfs
+      command: exportfs -ra
+      become: yes
+      become_user: root
