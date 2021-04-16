@@ -91,6 +91,8 @@ server {
         include uwsgi_params;
     }
 
+{% if galaxy_config['galaxy']['nginx_upload_store'] is defined %}
+
     location /_upload {
         upload_store {{ galaxy_config['galaxy']['nginx_upload_store'] }};
         upload_limit_rate 32k;
@@ -112,6 +114,9 @@ server {
         rewrite "" $dst;
     }
 
+{% endif %}
+{% if galaxy_config['galaxy']['nginx_upload_job_files_store'] is defined %}
+
     location /_job_files {
         if ($request_method != POST) {
                 rewrite "" /api/jobs/$arg_job_id/files last;
@@ -130,4 +135,5 @@ server {
         rewrite "" /api/jobs/$arg_job_id/files;
     }
 
+{% endif %}
 }

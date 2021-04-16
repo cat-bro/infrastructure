@@ -33,10 +33,11 @@ host_galaxy_config:  # renamed from __galaxy_config
     file_path: "{{ galaxy_root }}/data"
     galaxy_infrastructure_url: 'https://dev.usegalaxy.org.au'
     enable_oidc: true
-    nginx_upload_store: "{{ nginx_upload_store_dir }}"
-    nginx_upload_path: '/_upload'
-    nginx_upload_job_files_store: "{{ nginx_upload_job_files_store_dir }}"
-    nginx_upload_job_files_path: '/_job_files'
+    # nginx_upload_store: "{{ nginx_upload_store_dir }}"
+    # nginx_upload_path: '/_upload'
+    # nginx_upload_job_files_store: "{{ nginx_upload_job_files_store_dir }}"
+    # nginx_upload_job_files_path: '/_job_files'
+    outputs_to_working_dir: true
 
 galaxy_handler_count: 2   ############# europe uses 5, this could be host specific
 
@@ -131,10 +132,10 @@ galaxyserver_attached_volume_device: /dev/vdb
 galaxyserver_attached_volume_path: /mnt
 galaxyserver_attached_volume_fstype: ext4
 
-# variables for attaching upload store volume to application server
-uploadstore_attached_volume_device: /dev/vdc
-uploadstore_attached_volume_path: /upload_store
-uploadstore_attached_volume_fstype: ext4
+# # variables for attaching upload store volume to application server
+# uploadstore_attached_volume_device: /dev/vdc
+# uploadstore_attached_volume_path: /upload_store
+# uploadstore_attached_volume_fstype: ext4
 
 # cvmfs
 cvmfs_cache_base: /mnt/var/lib/cvmfs
@@ -163,8 +164,9 @@ aaf_client_id: "{{ vault_aaf_client_id_dev }}"
 aaf_client_secret: "{{ vault_aaf_client_secret_dev }}"
 
 # Upload store directories
-nginx_upload_store_dir: "{{ uploadstore_attached_volume_path }}/uploads"
-nginx_upload_job_files_store_dir: "{{ uploadstore_attached_volume_path }}/job_files"
+upload_store_base_dir: "{{ galaxy_config.galaxy.file_path }}/upload_store"
+nginx_upload_store_dir: "{{ upload_store_base_dir }}/uploads"
+nginx_upload_job_files_store_dir: "{{ upload_store_base_dir }}/job_files"
 
-# galaxyproject.nginx
+# galaxyproject.nginx (from usegalaxy-au fork)
 nginx_skip_install: true
