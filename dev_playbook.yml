@@ -15,13 +15,13 @@
           attached_volume_device: "{{ galaxyserver_attached_volume_device }}"
           attached_volume_fstype: "{{ galaxyserver_attached_volume_fstype }}"
           attached_volume_path: "{{ galaxyserver_attached_volume_path }}"
-      - name: Attach upload store volume to instance
-        include_role:
-          name: set-up-volume
-        vars:
-          attached_volume_device: "{{ uploadstore_attached_volume_device }}"
-          attached_volume_fstype: "{{ uploadstore_attached_volume_fstype }}"
-          attached_volume_path: "{{ uploadstore_attached_volume_path }}"
+      # - name: Attach upload store volume to instance
+      #   include_role:
+      #     name: set-up-volume
+      #   vars:
+      #     attached_volume_device: "{{ uploadstore_attached_volume_device }}"
+      #     attached_volume_fstype: "{{ uploadstore_attached_volume_fstype }}"
+      #     attached_volume_path: "{{ uploadstore_attached_volume_path }}"
       - name: Ensure that upload_store directories exist
         file:
             path: "{{ item }}"
