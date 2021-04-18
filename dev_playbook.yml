@@ -15,21 +15,6 @@
           attached_volume_device: "{{ galaxyserver_attached_volume_device }}"
           attached_volume_fstype: "{{ galaxyserver_attached_volume_fstype }}"
           attached_volume_path: "{{ galaxyserver_attached_volume_path }}"
-      # - name: Attach upload store volume to instance
-      #   include_role:
-      #     name: set-up-volume
-      #   vars:
-      #     attached_volume_device: "{{ uploadstore_attached_volume_device }}"
-      #     attached_volume_fstype: "{{ uploadstore_attached_volume_fstype }}"
-      #     attached_volume_path: "{{ uploadstore_attached_volume_path }}"
-      - name: Ensure that upload_store directories exist
-        file:
-            path: "{{ item }}"
-            state: directory
-            mode: '755'
-        with_items:
-          - "{{ nginx_upload_store_dir }}"
-          - "{{ nginx_upload_job_files_store_dir }}"
   handlers:
     - name: Restart Galaxy
       systemd:
@@ -45,7 +30,7 @@
     - geerlingguy.pip
     - galaxyproject.galaxy
     - usegalaxy_eu.galaxy_systemd
-    - nginx-with-dynamic-module
+    - nginx-upload-module
     - galaxyproject.nginx
     - geerlingguy.nfs
     - galaxyproject.slurm
