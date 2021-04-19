@@ -42,7 +42,6 @@ host_galaxy_config:  # renamed from __galaxy_config
     nginx_upload_path: '/_upload'
     nginx_upload_job_files_store: "{{ nginx_upload_job_files_store_dir }}"
     nginx_upload_job_files_path: '/_job_files'
-    outputs_to_working_dir: true
 
 galaxy_handler_count: 2   ############# europe uses 5, this could be host specific
 

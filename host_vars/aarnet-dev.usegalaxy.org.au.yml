@@ -64,6 +64,11 @@ host_galaxy_config:  # renamed from __galaxy_config
     #IT overide stuff
     interactivetools_enable: true
     interactivetools_map: "{{ gie_proxy_sessions_path }}"
+    # nginx upload module
+    nginx_upload_store: "{{ nginx_upload_store_dir }}"
+    nginx_upload_path: '/_upload'
+    nginx_upload_job_files_store: "{{ nginx_upload_job_files_store_dir }}"
+    nginx_upload_job_files_path: '/_job_files'
 
 galaxy_handler_count: 2   ############# europe uses 5, this could be host specific
 
