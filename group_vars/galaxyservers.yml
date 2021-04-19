@@ -193,9 +193,6 @@ group_galaxy_config:
     build_sites_config_file: "{{ galaxy_config_dir }}/build_sites.yml"
     enable_old_display_applications: true
 
-    oidc_config_file: "{{ galaxy_config_dir }}/oidc_config.xml"
-    oidc_backends_config_file: "{{ galaxy_config_dir }}/oidc_backends_config.xml"
-
     # amqp_internal_connection: 'pyamqp://galaxy_internal:more_queues@localhost:5672/galaxy_internal' # this needs configuration
 
     # data_manager_config_file: /mnt/galaxy-app/config/data_manager_conf.xml.sample  # should we be templating these?
