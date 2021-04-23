@@ -4,7 +4,11 @@ tools:
   fasta-stats:
     default_destination: pulsar_destination
   bwa_mem:
-    default_destination: pulsar_destination_nci
+    default_destination: pulsar_nci_test_big
+  fastqc:
+    default_destination: pulsar_nci_test_mid
+  fastq_paired_end_interlacer:
+    default_destination: pulsar_nci_test_mid
 default_destination: slurm_dest
 
 verbose: True

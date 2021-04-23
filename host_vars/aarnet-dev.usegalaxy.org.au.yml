@@ -145,7 +145,7 @@ galaxy_jobconf:
               rewrite_parameters: "true"
               persistence_directory: /mnt/pulsar/files/persisted_data
               submit_native_specification: "--nodes=1 --ntasks=2 --ntasks-per-node=2"
-      - id: pulsar_destination_nci
+      - id: pulsar_nci_test_small
         runner: pulsar_nci_test_runner
         params:
               jobs_directory: /mnt/pulsar/files/staging
@@ -156,6 +156,28 @@ galaxy_jobconf:
               rewrite_parameters: "true"
               persistence_directory: /mnt/pulsar/files/persisted_data
               submit_native_specification: "--nodes=1 --ntasks=2 --ntasks-per-node=2"
+      - id: pulsar_nci_test_mid
+        runner: pulsar_nci_test_runner
+        params:
+              jobs_directory: /mnt/pulsar/files/staging
+              transport: curl
+              remote_metadata: "false"
+              default_file_action: remote_transfer
+              dependency_resolution: remote
+              rewrite_parameters: "true"
+              persistence_directory: /mnt/pulsar/files/persisted_data
+              submit_native_specification: "--nodes=1 --ntasks=8 --ntasks-per-node=8"
+      - id: pulsar_nci_test_big
+        runner: pulsar_nci_test_runner
+        params:
+              jobs_directory: /mnt/pulsar/files/staging
+              transport: curl
+              remote_metadata: "false"
+              default_file_action: remote_transfer
+              dependency_resolution: remote
+              rewrite_parameters: "true"
+              persistence_directory: /mnt/pulsar/files/persisted_data
+              submit_native_specification: "--nodes=1 --ntasks=16 --ntasks-per-node=16"
       - id: interactive_local
         runner: pulsar_embedded
         params:
