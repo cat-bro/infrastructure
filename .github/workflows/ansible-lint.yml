@@ -22,5 +22,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ansible==2.9.2 ansible-lint==5.0.7
+    - name: Fake a vault password, yeah, like this is going to help
+      run: echo 'thisisgoingtobeaproblem' > .vault_pass.txt
     - name: Lint playbooks
       run: ansible-lint -c .ci/.ansible-lint *playbook.yml
