@@ -1433,6 +1433,14 @@ tools:
               upper_bound: 3 GB
               destination: slurm_5slots
         default_destination: slurm_9slots
+    maker:
+        rules:
+            - rule_type: file_size
+              nice_value: 0
+              destination: pulsar-mel3_mid
+              lower_bound: 5 MB
+              upper_bound: Infinity
+        default_destination: pulsar-mel3_small
     #
     # Data managers
     #
