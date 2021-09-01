@@ -62,14 +62,14 @@ nginx_upload_limit_rate: 0 # for nginx template: rate in bytes per second.  0 me
 # Variables that will differ based on the value of use_cloudstor_conf
 default_settings:
   tool_config_files: "{{ galaxy_config_dir }}/tool_conf.xml,{{ galaxy_config_dir }}/nagios_tool_conf.xml,{{ galaxy_config_dir }}/local_tool_conf.xml"
-  user_prefs_extra_config_file: user_preferences_extra_conf.yml
+  # user_prefs_extra_config_file: user_preferences_extra_conf.yml
 
 cloudstor_settings:
   tool_config_files: "{{ galaxy_config_dir }}/tool_conf.xml,{{ galaxy_config_dir }}/nagios_tool_conf.xml,{{ galaxy_config_dir }}/cloudstor_tool_conf.xml,{{ galaxy_config_dir }}/local_tool_conf.xml"
-  user_prefs_extra_config_file: user_preferences_extra_conf_cloudstor.yml
+  # user_prefs_extra_config_file: user_preferences_extra_conf_cloudstor.yml
 
 tool_config_files: "{{ cloudstor_settings['tool_config_files'] if use_cloudstor_conf|d(false) == true else default_settings['tool_config_files'] }}"
-user_prefs_extra_config_file: "{{ cloudstor_settings['user_prefs_extra_config_file'] if use_cloudstor_conf|d(false) == true else default_settings['user_prefs_extra_config_file'] }}"
+# user_prefs_extra_config_file: "{{ cloudstor_settings['user_prefs_extra_config_file'] if use_cloudstor_conf|d(false) == true else default_settings['user_prefs_extra_config_file'] }}"
 # end variables dependent on use_cloudstor_conf
 
 galaxy_create_user: true
@@ -254,7 +254,7 @@ group_galaxy_config_files:
     dest: "{{ galaxy_config_dir }}/cloudstor_tool_conf.xml"
   - src: "{{ galaxy_config_file_src_dir }}/config/local_tool_conf.xml"
     dest: "{{ galaxy_config_dir }}/local_tool_conf.xml"
-  - src: "{{ galaxy_config_file_src_dir }}/config/{{ user_prefs_extra_config_file }}"
+  - src: "{{ galaxy_config_file_src_dir }}/config/user_preferences_extra_conf.yml"
     dest: "{{ galaxy_config['galaxy']['user_preferences_extra_conf_path'] }}"
   - src: "{{ galaxy_config_file_src_dir }}/config/build_sites.yml"
     dest: "{{ galaxy_config_dir }}/build_sites.yml"
