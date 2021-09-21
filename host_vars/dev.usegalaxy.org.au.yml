@@ -75,6 +75,9 @@ host_galaxy_config:  # renamed from __galaxy_config
     interactivetools_enable: true
     interactivetools_map: "{{ gie_proxy_sessions_path }}"
     cleanup_job: never
+    enable_mulled_containers: true
+    enable_beta_containers_interface: true
+    container_resolvers_config_file: "{{ galaxy_server_dir }}/config/container_resolvers_conf.xml.sample"
 
 galaxy_handler_count: 2   ############# europe uses 5, this could be host specific
 
@@ -143,6 +146,21 @@ galaxy_jobconf:
         runner: slurm
         params:
             nativeSpecification: "--nodes=1 --ntasks=2 --ntasks-per-node=2 --mem=7760"
+      - id: slurm_2slots_singularity
+        runner: slurm
+        params:
+          nativeSpecification: "--nodes=1 --ntasks=2 --ntasks-per-node=2 --mem=7760"
+        singularity_enabled: true
+        singularity_volumes: '$galaxy_root:ro,$tool_directory:ro,$job_directory:ro,$working_directory:rw,$default_file_path:rw'
+        # singularity_volumes: '$galaxy_root:ro,$tool_directory:ro,$working_directory:rw,$job_directory:rw,/galaxy-repl/test/object_store_cache:ro'
+        singularity_default_container_id: '/cvmfs/singularity.galaxyproject.org/all/python:3.8.3'
+      - id: slurm_2slots_docker
+        runner: slurm
+        params:
+          nativeSpecification: "--nodes=1 --ntasks=2 --ntasks-per-node=2 --mem=7760"
+        docker_enabled: true
+        docker_memory: 3.88
+        docker_volumes: '$galaxy_root:ro,$tool_directory:ro,$job_directory:ro,$working_directory:rw,$default_file_path:rw'
       - id: pulsar_destination
         runner: pulsar_au_01
         params:

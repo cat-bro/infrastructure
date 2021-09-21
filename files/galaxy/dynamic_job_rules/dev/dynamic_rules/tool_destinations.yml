@@ -9,6 +9,10 @@ tools:
     default_destination: pulsar-nci-test_small
   hifiasm:
     default_destination: pulsar-nci-test_big
+  bionano_scaffold:
+    default_destination: slurm_2slots_docker
+  multiqc:
+    default_destination: slurm_2slots_singularity
 default_destination: slurm_1slot
 
 verbose: True
