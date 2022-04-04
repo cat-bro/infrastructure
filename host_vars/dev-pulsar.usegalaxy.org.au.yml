@@ -36,3 +36,13 @@ golang_gopath: '/var/workspace-go'
 # Singularity target version
 singularity_version: "3.7.4"
 singularity_go_path: "{{ golang_install_dir }}"
+
+# Job metrics just for dev while trying out cgroups
+pulsar_job_metrics_plugins:
+  - type: core
+  - type: cpuinfo
+  - type: meminfo
+  - type: cgroup
+    params: 'cpuacct.usage,memory.max_usage_in_bytes,memory.memsw.max_usage_in_bytes'
+  - type: env
+    variables: 'HOSTNAME,SLURM_CPUS_ON_NODE,SLURM_JOB_ID'
