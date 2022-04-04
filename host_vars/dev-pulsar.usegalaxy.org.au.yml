@@ -22,3 +22,12 @@ extra_keys:
     type: public
     from: "{{ hostvars['dev']['ansible_ssh_host'] }}"
 
+# Job metrics just for dev while trying out cgroups
+pulsar_job_metrics_plugins:
+  - type: core
+  - type: cpuinfo
+  - type: meminfo
+  - type: cgroup
+    params: 'cpuacct.usage,memory.max_usage_in_bytes,memory.memsw.max_usage_in_bytes'
+  - type: env
+    variables: 'HOSTNAME,SLURM_CPUS_ON_NODE,SLURM_JOB_ID'

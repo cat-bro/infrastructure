@@ -194,3 +194,13 @@ slurm_docker_volumes: "{{ slurm_docker_volumes_list | join(',') }}"
 pulsar_docker_volumes: "{{ pulsar_docker_volumes_list | join(',') }}"
 
 singularity_default_container_id: '/cvmfs/singularity.galaxyproject.org/all/python:3.8.3'
+
+# Job metrics just for dev while trying out cgroups
+galaxy_job_metrics_plugins:
+  - type: core
+  - type: cpuinfo
+  - type: meminfo
+  - type: cgroup
+    params: 'cpuacct.usage,memory.max_usage_in_bytes,memory.memsw.max_usage_in_bytes'
+  - type: env
+    variables: 'HOSTNAME,SLURM_CPUS_ON_NODE,SLURM_JOB_ID'
