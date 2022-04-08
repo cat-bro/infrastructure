@@ -2,7 +2,7 @@
 <object_store type="hierarchical">
     <backends>
         <backend id="testNFS" type="disk" order="0">
-            <files_dir path="/mnt/user-data-test" />
+            <files_dir path="/mnt/tmp/user-data-test" />
         </backend>
         <!--
         <backend id="perthNFS4" type="disk" order="0">

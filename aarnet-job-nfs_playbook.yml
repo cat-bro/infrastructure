@@ -10,10 +10,13 @@
       - name: Attach volume to instance
         include_role:
           name: attached-volumes
-      - name: Create galaxy_user_data_dir directory
+      - name: Create galaxy_job_dir directory
         file:
-          path: "{{ galaxy_job_dir }}"
+          path: "{{ item }}"
           state: directory
+        with_items:
+          - "{{ galaxy_job_dir }}"
+          - "{{ galaxy_job_dir }}/user-data-test"  # Temporary path for testing
   roles:
       - common
       - insspb.hostname
@@ -23,9 +26,12 @@
   post_tasks:
       - name: Chown shared dirs to Galaxy user
         file:
-          path: "{{ galaxy_job_dir }}"
+          path: "{{ item }}"
           owner: galaxy
           group: galaxy
+        with_items:
+          - "{{ galaxy_job_dir }}"
+          - "{{ galaxy_job_dir }}/user-data-test"  # Temporary path for testing
       - name: Reload exportfs
         command: exportfs -ra
         become: yes
