@@ -6,10 +6,10 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - '*.yml'
-      - '*.yml.j2'
-      - '*.yaml'
-      - '*.yaml.j2'
+      - '*\.yml'
+      - '*\.yml.j2'
+      - '*\.yaml'
+      - '*\.yaml.j2'
        
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
