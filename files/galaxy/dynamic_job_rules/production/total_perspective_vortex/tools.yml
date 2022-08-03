@@ -1157,20 +1157,12 @@ tools:
       cores: 8
   toolshed.g2.bx.psu.edu/repos/iuc/busco/busco/[^3].*:
     cores: 2
-    scheduling:
-      accept:
-      - pulsar
-      reject:
-      - pulsar-mel2
+    params:
+      singularity_enabled: True
+      dependency_resolution: none
     rules:
-    - if: 0.05 <= input_size < 0.3
+    - if: 0.05 <= input_size
       cores: 8
-    - if: input_size >= 0.3
-      cores: 60
-      mem: 961
-      scheduling:
-        accept:
-        - high-mem
   toolshed.g2.bx.psu.edu/repos/iuc/mothur_cluster_split/mothur_cluster_split/.*:
     cores: 1
     scheduling:
