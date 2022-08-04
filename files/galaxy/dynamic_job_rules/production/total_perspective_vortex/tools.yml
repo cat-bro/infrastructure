@@ -1161,8 +1161,10 @@ tools:
       singularity_enabled: True
       dependency_resolution: none
     rules:
-    - if: 0.05 <= input_size
+    - if: 0.05 <= input_size < 0.5
       cores: 8
+    - if: input_size >= 0.5
+      cores: 12
   toolshed.g2.bx.psu.edu/repos/iuc/mothur_cluster_split/mothur_cluster_split/.*:
     cores: 1
     scheduling:
