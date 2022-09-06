@@ -7,7 +7,7 @@ pipeline {
           EXTRA_VARS='--extra_vars "ansible_user=jenkins_bot"'
       }
       steps {
-        sh 'source jenkins/utils.sh'
+        sh '. jenkins/utils.sh'
         sh 'echo false_password > .vault_pass.txt'
         sh 'activate_virtualenv'
         sshagent (credentials: ['galaxy-au-tools-jenkins-bot ssh key']) {
