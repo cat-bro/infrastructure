@@ -4,8 +4,8 @@ pipeline {
   stages {
     stage('Build') {
       environment {
-          EXTRA_VARS="ansible_user=jenkins_bot"
-          PLAYBOOK="staging_update_configs_playbook.yml"
+        PLAYBOOK="staging_update_configs_playbook.yml"
+        EXTRA_VARS="ansible_user=jenkins_bot"
       }
       steps {
         sh 'echo false_password > .vault_pass.txt'
@@ -15,8 +15,8 @@ pipeline {
               source jenkins/utils.sh;
               activate_virtualenv;
               ansible-playbook -i hosts "$PLAYBOOK" \
-                --extra_vars "$EXTRA_VARS" \
-                --vault_pass "$VAULT_PASS";
+                --extra-vars "$EXTRA_VARS" \
+                --vault-password-file "$VAULT_PASS";
             '''
           }
         }
