@@ -15,7 +15,7 @@ pipeline {
               source jenkins/utils.sh;
               activate_virtualenv;
               ansible-playbook -i hosts "$PLAYBOOK" \
-                --extra_vars "$EXTRA_VARS"' \
+                --extra_vars "$EXTRA_VARS" \
                 --vault_pass "$VAULT_PASS";
             '''
           }
