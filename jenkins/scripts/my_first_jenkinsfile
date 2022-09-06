@@ -10,7 +10,7 @@ pipeline {
         sh 'source jenkins/utils.sh; activate_virtualenv'
         sh 'echo false_password > .vault_pass.txt'
         sshagent (credentials: ['galaxy-au-tools-jenkins-bot ssh key']) {
-          withCredentials([file(credentialsId: '.vault_pass.txt', variable: 'VAULT_PASS')]){
+          withCredentials([file(credentialsId: 'infrastructure_vault_pass', variable: 'VAULT_PASS')]){
             sh 'ansible-playbook -i hosts staging_update_configs_playbook.yml $EXTRA_VARS'
           }
         }
