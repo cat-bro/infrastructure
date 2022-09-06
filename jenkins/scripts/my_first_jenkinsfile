@@ -5,13 +5,13 @@ pipeline {
     stage('Build') {
       environment {
           EXTRA_VARS='--extra_vars "ansible_user=jenkins_bot"'
+          PLAYBOOK='staging_update_configs_playbook.yml'
       }
       steps {
-        sh 'source jenkins/utils.sh; activate_virtualenv'
         sh 'echo false_password > .vault_pass.txt'
         sshagent (credentials: ['galaxy-au-tools-jenkins-bot ssh key']) {
           withCredentials([file(credentialsId: 'infrastructure_vault_pass', variable: 'VAULT_PASS')]){
-            sh 'ansible-playbook -i hosts staging_update_configs_playbook.yml $EXTRA_VARS'
+            sh 'source jenkins/utils.sh; activate_virtualenv; ansible-playbook -i hosts "$PLAYBOOK" "$EXTRA_VARS"'
           }
         }
       }
