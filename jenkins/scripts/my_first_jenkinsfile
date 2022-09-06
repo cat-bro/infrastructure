@@ -16,7 +16,7 @@ pipeline {
               activate_virtualenv;
               ansible-playbook -i hosts "$PLAYBOOK" \
                 --extra_vars "$EXTRA_VARS"' \
-                --vault_pass "$VAULT_PASS"
+                --vault_pass "$VAULT_PASS";
             '''
           }
         }
