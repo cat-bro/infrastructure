@@ -14,6 +14,7 @@ pipeline {
             sh '''
               source jenkins/utils.sh;
               activate_virtualenv;
+              ansible-galaxy install -p roles -r requirements.yml --force;
               ansible-playbook -i hosts "$PLAYBOOK" \
                 --extra-vars "$EXTRA_VARS" \
                 --vault-password-file "$VAULT_PASS";
