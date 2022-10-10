@@ -1,5 +1,7 @@
 destinations:
   default:
+    cores: 0
+    mem: 0
     rules:
       - if: params.get('singularity_enabled', False)
         params:

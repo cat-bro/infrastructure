@@ -102,6 +102,11 @@ execution:
     dynamic_dtd:
       runner: dynamic
       type: dtd
+    # abstract destinations:
+    default: {}
+    _slurm_destination: {}
+    _pulsar_destination: {}
+    # destinations
     slurm:
       runner: slurm
       nativeSpecification: "--nodes=1 --ntasks=2 --ntasks-per-node=2 --mem=7760"

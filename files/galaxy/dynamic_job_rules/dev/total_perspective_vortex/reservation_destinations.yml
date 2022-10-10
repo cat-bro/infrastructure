@@ -1,26 +1,26 @@
-destinations:
-  pulsar-reservation-g2-xlarge-A:
-    inherits: _pulsar_destination
-    cores: 60
-    mem: 120
-    gpus: 1
-    scheduling:
-      require:
-        - pulsar
-        - reservation-pulsar
-      accept:
-        - alphafold
-        - pulsar-reservation-g2-xlarge-A
-  pulsar-reservation-g2-xlarge-B:
-    inherits: _pulsar_destination
-    cores: 60
-    mem: 120
-    gpus: 1
-    scheduling:
-      require:
-        - pulsar
-        - reservation-pulsar
-        - offline
-      accept:
-        - alphafold
-        - pulsar-reservation-g2-xlarge-B
+destinations: {}
+  # pulsar-reservation-g2-xlarge-A:
+  #   inherits: _pulsar_destination
+  #   cores: 60
+  #   mem: 120
+  #   gpus: 1
+  #   scheduling:
+  #     require:
+  #       - pulsar
+  #       - reservation-pulsar
+  #     accept:
+  #       - alphafold
+  #       - pulsar-reservation-g2-xlarge-A
+  # pulsar-reservation-g2-xlarge-B:
+  #   inherits: _pulsar_destination
+  #   cores: 60
+  #   mem: 120
+  #   gpus: 1
+  #   scheduling:
+  #     require:
+  #       - pulsar
+  #       - reservation-pulsar
+  #       - offline
+  #     accept:
+  #       - alphafold
+  #       - pulsar-reservation-g2-xlarge-B
