@@ -35,7 +35,15 @@
       when: add_hosts_head is defined and add_hosts_head == true
       with_items:
           "{{ head_nodes }}"
-    
+
+    - name: debug
+      debug:
+        msg: "{{ add_hosts_handlers }}"
+
+    - name: debug
+      debug:
+        msg: "{{ add_hosts_handlers is defined and add_hosts_handlers == true }}"
+
     - name: Add to handlers node to hosts files
       become: yes
       become_user: root
@@ -47,7 +55,7 @@
           backup: yes
       when: add_hosts_handlers is defined and add_hosts_handlers == true
       with_items:
-          "{{ handlers_nodes }}"
+          "{{ handlers_nodes|d([]) }}"
 
     - name: Add to worker nodes to host file
       become: yes
