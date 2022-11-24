@@ -1,0 +1,38 @@
+---
+# because of a difference in the setups of nci-build and aarnet-build w.r.t. how ansible
+# is run I'm starting with the NCI case, then I will rally to make nci-build and aarnet-build
+# deployment strategies identical
+- hosts: nci-build # but in future this could be a variable
+  become: true
+  become_user: jenkins_bot
+  vars:
+    - infrastructure_repo_dir: "/home/jenkins_bot/infrastructure"
+    # - playbook # supplied in args
+    # - key_path # supplied in args
+  tasks:
+    # Should I git pull here or fetch origin & reset hard to origin/master?
+    # Or instead fail if there are local changes?
+    - name: Update Infrastructure git repo
+      git:
+        dest: "{{ infrastructure_repo_dir }}"
+        repo: https://github.com/cat-bro/infrastructure.git
+        version: groovy
+        # repo: https://github.com/usegalaxy-au/infrastructure.git
+        # version: master
+      register: __git_update_result # TODO: is this needed?
+    # # - name: pull from infrastructure github
+    # #   command:
+    # #     cmd: git pull --ff-only
+    # #     chdir: "{{ infrastructure_repo_dir }}"
+    # - name: update roles FORCEFULLY and obviously TODO see if I can find a way of being less forceful
+    #   command: # TODO deconstruct command # TODO make this fail and see what happens
+    #     cmd: ansible-galaxy install -p roles -r requirements.yml -f 
+    #     chdir: "{{ infrastructure_repo_dir }}"
+    # - name: "run playbook {{ playbook }} and register everything"
+    #   command:
+    #     cmd: ansible-playbook -i hosts {{ playbook }} --private-key {{ key_path }}
+    #     chdir: "{{ infrastructure_repo_dir }}"
+    #   register: ansible_everything
+    # - name: fetch the log back to jenkins
+    #   debug:
+    #     msg: "{{ ansible_everything }}"
