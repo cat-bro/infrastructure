@@ -9,26 +9,26 @@
     - host_vars/pulsar-nci-test/pulsar-nci-test.usegalaxy.org.au.yml
   roles:
     - common
-    - insspb.hostname
-    - geerlingguy.pip
-    - galaxyproject.repos
-    - role: galaxyproject.miniconda
-      become: true
-      become_user: "{{ pulsar_user.name }}"
-    - galaxyproject.pulsar
-    - geerlingguy.nfs
-    - mariadb
-    - galaxyproject.slurm
-    - galaxyproject.cvmfs
-    - gantsign.golang
-    - cyverse-ansible.singularity
-    - geerlingguy.docker
-    - acl-on-startup
-    - dj-wasabi.telegraf
-    - pulsar-post-tasks
-    - slurm-post-tasks
-    # - slg.galaxy_stats
-  post_tasks:
-    - name: Reload exportfs
-      command: exportfs -ra
+  #   - insspb.hostname
+  #   - geerlingguy.pip
+  #   - galaxyproject.repos
+  #   - role: galaxyproject.miniconda
+  #     become: true
+  #     become_user: "{{ pulsar_user.name }}"
+  #   - galaxyproject.pulsar
+  #   - geerlingguy.nfs
+  #   - mariadb
+  #   - galaxyproject.slurm
+  #   - galaxyproject.cvmfs
+  #   - gantsign.golang
+  #   - cyverse-ansible.singularity
+  #   - geerlingguy.docker
+  #   - acl-on-startup
+  #   - dj-wasabi.telegraf
+  #   - pulsar-post-tasks
+  #   - slurm-post-tasks
+  #   # - slg.galaxy_stats
+  # post_tasks:
+  #   - name: Reload exportfs
+  #     command: exportfs -ra
     
