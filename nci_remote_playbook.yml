@@ -30,7 +30,7 @@
     #     chdir: "{{ infrastructure_repo_dir }}"
     # - name: "run playbook {{ playbook }} and register everything"
     #   command:
-    #     cmd: ansible-playbook -i hosts {{ playbook }} --private-key {{ key_path }}
+    #     cmd: ansible-playbook -i hosts {{ playbook }} --private-key {{ key_path }} --extra-vars "ansible-user=jenkins_bot"
     #     chdir: "{{ infrastructure_repo_dir }}"
     #   register: ansible_everything
     # - name: fetch the log back to jenkins
