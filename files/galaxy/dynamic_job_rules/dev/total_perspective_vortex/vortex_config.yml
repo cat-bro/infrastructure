@@ -46,10 +46,6 @@ tools:
       accept:
         - pulsar
     cores: 16
-  toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/*:
-    scheduling:
-      accept:
-        - pulsar
   toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa_mem/.*:
     cores: 6
     rules:
@@ -275,17 +271,37 @@ tools:
     cores: 8
     params:
       singularity_enabled: True
+  toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/.*:
+    cores: 4
+    mem: 10
+    scheduling:
+      require:
+        - pulsar
+        - pulsar-nci-test
+  toolshed.g2.bx.psu.edu/repos/bgruening/canu/canu/.*:
+    cores: 4
+    mem: 10
+    scheduling:
+      require:
+        - pulsar
+        - pulsar-nci-test
   toolshed.g2.bx.psu.edu/repos/iuc/busco/busco/.*:
-    # context:
-    #   minimum_singularity_version: 5.0.0+galaxy0  # not working, ref https://github.com/galaxyproject/total-perspective-vortex/pull/32
-    rules:
-      - if: |
-          import packaging.version
-          minimum_singularity_version = '5.0.0+galaxy0'
-          packaging.version.parse(tool.version) >= packaging.version.parse(minimum_singularity_version)
-        params:
-          singularity_enabled: true
-          dependency_resolution: none
+    cores: 4
+    mem: 10
+    scheduling:
+       require:
+         - pulsar
+         - pulsar-nci-test
+  #   # context:  # Note: commenting this out for testing, but keeping it because the rule might be useful (CB)
+  #   #   minimum_singularity_version: 5.0.0+galaxy0  # not working, ref https://github.com/galaxyproject/total-perspective-vortex/pull/32
+  #   rules:
+  #     - if: |
+  #         import packaging.version
+  #         minimum_singularity_version = '5.0.0+galaxy0'
+  #         packaging.version.parse(tool.version) >= packaging.version.parse(minimum_singularity_version)
+  #       params:
+  #         singularity_enabled: true
+  #         dependency_resolution: none
   metawrapmg_binning:
     cores: 16
 

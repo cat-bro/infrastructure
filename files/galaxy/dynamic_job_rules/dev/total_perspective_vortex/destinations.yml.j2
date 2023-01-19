@@ -55,6 +55,8 @@ destinations:
             container_resolvers: 
                 - type: explicit_singularity
                 - type: mulled_singularity
+                  cache_directory: /cvmfs/singularity.galaxyproject.org/all
+                  cache_directory_cacher_type: dir_mtime
             singularity_default_container_id: "{{ singularity_default_container_id }}" # default dest
         env:
           SINGULARITY_CACHEDIR: /mnt/pulsar/deps/singularity

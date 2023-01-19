@@ -19,6 +19,7 @@
       command: "{{ galaxy_venv_dir }}/bin/galaxyctl graceful"
       environment:
         GRAVITY_STATE_DIR: "{{ galaxy_gravity_state_dir }}"
+      listen: galaxy gravity restart
   pre_tasks:
     - name: create dir for gravity configuration
       file:
