@@ -124,6 +124,8 @@ tools:
     scheduling:
       accept:
       - pulsar
+      require:
+      - custom-indices
   toolshed.g2.bx.psu.edu/repos/bgruening/diamond/bg_diamond_makedb/.*:
     params:
       singularity_enabled: true
@@ -747,9 +749,8 @@ tools:
     scheduling:
       accept:
       - pulsar
-      reject:
-      - pulsar-QLD
-      - pulsar-mel2
+      require:
+      - custom-indices
   toolshed.g2.bx.psu.edu/repos/galaxyp/flashlfq/flashlfq/.*:
     scheduling:
       accept:
@@ -1074,9 +1075,8 @@ tools:
     scheduling:
       accept:
       - pulsar
-      reject:
-      - pulsar-mel2
-      - pulsar-QLD
+      require:
+      - custom-indices
     rules:
     - id: humann_small_input_rule
       if: input_size < 0.01
@@ -1185,8 +1185,8 @@ tools:
       accept:
       - pulsar
       - training-exempt
-      reject:
-      - pulsar-QLD
+      require:
+      - custom-indices
     rules:
     - id: rule_kraken2_limit_concurrency
       if: |

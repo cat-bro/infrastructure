@@ -66,6 +66,7 @@ destinations:
     scheduling:
       accept:
         - slurm
+        - custom-indices
   slurm-training:
     inherits: _slurm_destination
     runner: slurm
@@ -75,6 +76,7 @@ destinations:
     scheduling:
       accept:
         - slurm
+        - custom-indices
       require:
         - training
   interactive_pulsar:
@@ -126,6 +128,7 @@ destinations:
     scheduling:
       accept:
         - pulsar-mel3
+        - custom-indices
       require:
         - pulsar
   pulsar-high-mem1:
@@ -199,6 +202,7 @@ destinations:
       accept:
         - pulsar-nci-training
         - pulsar-blast # allow training jobs with require: pulsar-blast to run here
+        - custom-indices
       require:
         - pulsar
         - training
