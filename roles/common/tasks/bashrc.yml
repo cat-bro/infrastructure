@@ -13,6 +13,11 @@
         export SQUEUE_FORMAT="{{ common_squeue_format }}"
         export SINFO_FORMAT="{{ common_sacct_format }}"
 
+        # helpful settings
+        export EDITOR=vim
+        HISTSIZE=
+        HISTFILESIZE=
+
         {% if is_galaxy_head_node %}
         # galaxy
         export PGHOST='{{ db_address }}'
