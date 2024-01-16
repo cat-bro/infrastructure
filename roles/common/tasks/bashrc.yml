@@ -58,6 +58,30 @@
         }
         {% endif %}
 
+        {% if ansible_hostname in groups['pulsar_head_nodes'] %}
+        # pulsar
+        jwd() { # print path of job working directory for job id
+            echo {{ pulsar_staging_dir }}/${1}
+        }
+
+        jwd-size() {
+          du -sh $(jwd $1)
+        }
+
+        go-jwd() { # go to job working directory for job id
+          cd $(jwd $1)
+        }
+
+        tail-stderr() {
+          stderr_filename=$(jwd $1)/metadata/tool_stderr
+          if [ ! -f $stderr_filename ]; then
+            echo "No stderr file for job $1";
+          else
+            tail $stderr_filename;
+          fi
+        }
+        {% endif %}
+
 - name: Template helper scripts
   template:
     src: "bashrc/{{ item }}.j2"
@@ -73,13 +97,15 @@
       source {{ common_bashrc_vars_file }}
       source {{ common_bashrc_functions_file }}
 
-      # local to user
+      {% if is_galaxy_head_node %}
+      # galaxy (per user)
       {% if item == 'ubuntu' %}
       export PGUSER='galaxy'
       {% elif 'tiaas_admin' in item.roles|d([]) %}
       export PGUSER='tiaasadmin'
       {% else %}
       export PGUSER='reader'
+      {% endif %}
       {% endif %}
 
   with_items: "{{ machine_users + [{'name': 'ubuntu'}] }}"
