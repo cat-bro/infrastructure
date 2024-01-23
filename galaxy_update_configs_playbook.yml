@@ -41,7 +41,7 @@
           src: "{{ galaxy_config_template_src_dir }}/toolbox/filters/ga_filters.py.j2"
           dest: "{{ galaxy_toolbox_filters_dir }}/ga_filters.py"
         notify:
-          - remote restart galaxy
+          - restart galaxy
       - name: Copy tool configuration files (static) # does not require a restart
         copy:
           src: "{{ galaxy_config_file_src_dir }}/config/{{ item }}"
