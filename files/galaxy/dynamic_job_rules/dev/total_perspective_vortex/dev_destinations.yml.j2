@@ -105,6 +105,26 @@ destinations:
     scheduling:
       require:
         - interactive_pulsar
+  interactive_slurm:
+    runner: slurm
+    tags: {{ job_conf_limits.environments['interactive_pulsar'].tags }}
+    max_accepted_cores: 8
+    max_accepted_mem: 32
+    params:
+      submit_native_specification: "--nodes=1 --ntasks={cores} --ntasks-per-node={cores} --mem={round(mem*1024)} --partition={partition}"
+      docker_enabled: true
+      docker_volumes: $defaults
+      docker_net: bridge
+      docker_auto_rm: true
+      docker_set_user: ''
+      docker_require_container: true
+      docker_memory: '{mem}G' # default dest
+      docker_sudo: false # default dest
+      outputs_to_working_directory: false
+      container_monitor_result: callback
+    scheduling:
+      require:
+        - interactive_slurm
   pulsar_destination:
     inherits: _pulsar_destination
     runner: pulsar_au_01
