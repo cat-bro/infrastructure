@@ -1,5 +1,7 @@
 roles:
   training.*:
+    params:
+      tiaas_training_role: '{sorted([role for role in user.all_roles() if not role.deleted], key=lambda x: x.created, reverse=True)[0]}'
     rules:
     - id: slurm_training_rule
       if: |
