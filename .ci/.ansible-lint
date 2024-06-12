@@ -1,0 +1,17 @@
+#enable_list:
+#- yaml
+#- var-spacing
+#- syntax-check
+#- risky-octal
+#- parser-error
+#- load-failure
+
+tags:
+- core
+- formatting
+
+skip_list:
+- no-tabs
+
+offline: true
+
