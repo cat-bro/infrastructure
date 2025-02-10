@@ -18,6 +18,9 @@ tools:
     mem: 62
   toolshed.g2.bx.psu.edu/repos/artbio/cap3/cap3/.*:
     mem: 24
+  toolshed.g2.bx.psu.edu/repos/artbio/gsc_scran_normalize/.*:
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/artbio/repenrich/repenrich/.*:
     context:
       max_concurrent_job_count_for_tool_user: 2
@@ -26,9 +29,6 @@ tools:
     scheduling:
       accept:
       - pulsar
-  toolshed.g2.bx.psu.edu/repos/artbio/gsc_scran_normalize/.*:
-    params:
-      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/bebatut/cdhit/cd_hit_est/.*:
     cores: 4
     mem: 15.3
@@ -192,21 +192,21 @@ tools:
   toolshed.g2.bx.psu.edu/repos/bgruening/diffbind/diffbind/.*:
     mem: 48
     rules:
-      - id: diffbind_medium_input_rule
-        if: 1 <= input_size < 7
-        mem: 30
-      - id: diffbind_small_input_rule
-        if: input_size < 1
-        mem: 12
-      - id: diffbind_singularity_rule
-        if: |
-          minimum_singularity_version = '3.12.0+galaxy0'
-          helpers.tool_version_gte(tool, minimum_singularity_version)
-        params:
-          singularity_enabled: true
-        scheduling:
-          accept:
-            - pulsar  # older versions might be OK with pulsar but are not OK with singularity
+    - id: diffbind_medium_input_rule
+      if: 1 <= input_size < 7
+      mem: 30
+    - id: diffbind_small_input_rule
+      if: input_size < 1
+      mem: 12
+    - id: diffbind_singularity_rule
+      if: |
+        minimum_singularity_version = '3.12.0+galaxy0'
+        helpers.tool_version_gte(tool, minimum_singularity_version)
+      params:
+        singularity_enabled: true
+      scheduling:
+        accept:
+        - pulsar      # older versions might be OK with pulsar but are not OK with singularity
   toolshed.g2.bx.psu.edu/repos/bgruening/enumerate_charges/enumerate_charges/.*:
     params:
       singularity_enabled: true
@@ -238,10 +238,10 @@ tools:
     cores: 4
     mem: 15.3
     params:
-      singularity_enabled: true 
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/bgruening/hicexplorer_.*:
     params:
-      singularity_enabled: true 
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/bgruening/hicexplorer_hicbuildmatrix/hicexplorer_hicbuildmatrix/.*:
     cores: 10
     mem: 38.3
@@ -415,18 +415,18 @@ tools:
       - pulsar
   toolshed.g2.bx.psu.edu/repos/chemteam/biopdb_align_and_rmsd/biopdb_align_and_rmsd/.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/chemteam/gmx_.*:
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/chemteam/gmx_merge_topology_files/gmx_merge_topology_files/.*:
     rules:
-      - id: gmx_merge_topology_files_singularity_rule
-        if: |
-          minimum_singularity_version = '3.4.3+galaxy0'
-          helpers.tool_version_lt(tool, minimum_singularity_version)
-        params:
-          singularity_enabled: false
+    - id: gmx_merge_topology_files_singularity_rule
+      if: |
+        minimum_singularity_version = '3.4.3+galaxy0'
+        helpers.tool_version_lt(tool, minimum_singularity_version)
+      params:
+        singularity_enabled: false
   toolshed.g2.bx.psu.edu/repos/chemteam/gmx_sim/gmx_sim/.*:
     context:
       max_concurrent_job_count_for_tool_user: 2
@@ -440,15 +440,15 @@ tools:
       if: input_size < 0.01
       cores: 2
       mem: 7.6
-  toolshed.g2.bx.psu.edu/repos/chemteam/mdanalysis_cosine_analysis/mdanalysis_cosine_analysis/.*:
-    mem: 12
-    params:
-      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/chemteam/md_converter/md_converter/.*:
     mem: 16  # TODO: review this, it might not need to be as high
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/chemteam/md_converter/md_slicer/.*:
+    params:
+      singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/chemteam/mdanalysis_cosine_analysis/mdanalysis_cosine_analysis/.*:
+    mem: 12
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/chemteam/mmpbsa_mmgbsa/mmpbsa_mmgbsa/.*:
@@ -511,7 +511,7 @@ tools:
     inherits: toolshed.g2.bx.psu.edu/repos/devteam/bowtie2/bowtie2/.*
     scheduling:
       require:
-        - slurm  # this can run on pulsar but has high input+output size per CPU-time
+      - slurm    # this can run on pulsar but has high input+output size per CPU-time
   toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa/.*:
     cores: 8
     mem: 30.7
@@ -673,7 +673,7 @@ tools:
       if: input_size > 20
       scheduling:
         require:
-          - slurm
+        - slurm
   toolshed.g2.bx.psu.edu/repos/devteam/flanking_features/flanking_features_1/.*:
     params:
       singularity_enabled: true
@@ -853,9 +853,6 @@ tools:
   toolshed.g2.bx.psu.edu/repos/devteam/samtools_idxstats/samtools_idxstats/.*:
     cores: 2
     mem: 7.6
-  toolshed.g2.bx.psu.edu/repos/iuc/samtools_markdup/samtools_markdup/.*:
-    cores: 4
-    mem: 15.3
   toolshed.g2.bx.psu.edu/repos/devteam/samtools_mpileup/samtools_mpileup/.*:
     cores: 5
     mem: 19.1
@@ -886,12 +883,6 @@ tools:
   toolshed.g2.bx.psu.edu/repos/devteam/sicer/peakcalling_sicer/.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/squirrel_.*:
-    params:
-      singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/squirrel_phylo/squirrel_phylo/.*:
-    cores: 5
-    mem: 19.1
   toolshed.g2.bx.psu.edu/repos/devteam/tophat2/tophat2/.*:
     cores: 8
     mem: 30.7
@@ -904,7 +895,7 @@ tools:
       cores: 1
       mem: 3.8
   toolshed.g2.bx.psu.edu/repos/dnbenso/masurca_simple/masurca_simple/.*:
-    cores: 8 
+    cores: 8
     mem: 42 # TODO: this is part of shared db already but can't be merged because linting is out of order
   toolshed.g2.bx.psu.edu/repos/earlhaminst/lotus2/lotus2/.*:
     mem: 16  # TODO - follow up with shared-db PR for this
@@ -915,15 +906,15 @@ tools:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/ebi-gxa/anndata_ops/anndata_ops/.*:
     mem: 2 + input_size * 7
-    rules:
-    - id: anndata_ops_fail_rule
-      if: input_size > 30
-      fail: Too much data. Total input data must be less than 30GB.
     params:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
+    rules:
+    - id: anndata_ops_fail_rule
+      if: input_size > 30
+      fail: Too much data. Total input data must be less than 30GB.
   toolshed.g2.bx.psu.edu/repos/ebi-gxa/gtf2gene_list/_ensembl_gtf2gene_list/.*:
     params:
       singularity_enabled: true
@@ -936,17 +927,11 @@ tools:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/ebi-gxa/scanpy_multiplet_scrublet/scanpy_multiplet_scrublet/.*:
     mem: 4 + input_size * 65
     rules:
     - id: scanpy_multiplet_scrublet_fail_rule
-      if: input_size > 10
-      fail: Too much data. Total input data must be less than 10GB.
-  toolshed.g2.bx.psu.edu/repos/ebi-gxa/scanpy_scale_data/scanpy_scale_data/.*:
-    mem: 4 + input_size * 32
-    rules:
-    - id: scanpy_scale_data_fail_rule
       if: input_size > 10
       fail: Too much data. Total input data must be less than 10GB.
   toolshed.g2.bx.psu.edu/repos/ebi-gxa/scanpy_run_pca/scanpy_run_pca/.*:
@@ -955,6 +940,12 @@ tools:
     - id: scanpy_run_pca_fail_rule
       if: input_size > 20
       fail: Too much data. Total input data must be less than 20GB.
+  toolshed.g2.bx.psu.edu/repos/ebi-gxa/scanpy_scale_data/scanpy_scale_data/.*:
+    mem: 4 + input_size * 32
+    rules:
+    - id: scanpy_scale_data_fail_rule
+      if: input_size > 10
+      fail: Too much data. Total input data must be less than 10GB.
   toolshed.g2.bx.psu.edu/repos/ecology/.*:
     params:
       singularity_enabled: true
@@ -973,6 +964,10 @@ tools:
   toolshed.g2.bx.psu.edu/repos/ecology/pampa_presabs/pampa_presabs/.*:
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/galaxy-australia/aarnet_filesender/aarnet_filesender/.*:
+    params:
+      singularity_enabled: true
+
   toolshed.g2.bx.psu.edu/repos/galaxy-australia/alphafold2/alphafold/.*:
     context:
       alphafold_aa_length_max: 3000
@@ -984,9 +979,11 @@ tools:
     mem: 130
     params:
       docker_enabled: true
+      docker_run_extra_arguments: --gpus all --env ALPHAFOLD_AA_LENGTH_MIN=5 --env
+        ALPHAFOLD_AA_LENGTH_MAX={alphafold_aa_length_max} --env ALPHAFOLD_MAX_SEQUENCES={alphafold_max_input_sequences}
+        --env ALPHAFOLD_DB={alphafold_db}
       docker_volumes: 
         $job_directory:ro,$tool_directory:ro,$job_directory/outputs:rw,$working_directory:rw,/data/alphafold_databases:/data:ro
-      docker_run_extra_arguments: '--gpus all --env ALPHAFOLD_AA_LENGTH_MIN=5 --env ALPHAFOLD_AA_LENGTH_MAX={alphafold_aa_length_max} --env ALPHAFOLD_MAX_SEQUENCES={alphafold_max_input_sequences} --env ALPHAFOLD_DB={alphafold_db}'
       tmp_dir: true
     rules:
     - if: |
@@ -1009,11 +1006,11 @@ tools:
         user_roles = [role.name for role in user.all_roles() if not role.deleted]
         user.username in [f'qldgpu{x+1}' for x in range(6)] or 'pulsar_gpu_test' in user_roles
       scheduling:
-        accept:
-        - pulsar
         require:
         - pulsar-qld-gpu-alphafold
         - pulsar-qld-gpu
+        accept:
+        - pulsar
     - if: |
         not user or not any([
           role for role in user.all_roles() if (
@@ -1053,6 +1050,30 @@ tools:
     scheduling:
       accept:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado/dorado/.*:
+    gpus: 1
+    cores: 8
+    mem: 540  # updated from 69 to 130 to lower the concurrency, not because his needs a lot of RAM, the next day updated to 540 so only one will run at once
+    params:
+      singularity_enabled: true
+      singularity_run_extra_arguments: --nv
+    scheduling:
+      require:
+      - pulsar-qld-gpu-other
+      - pulsar-qld-gpu
+      accept:
+      - pulsar
+      - training-exempt
+  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado_pod5_convert/dorado_pod5_convert/.*:
+    cores: 8
+    params:
+      singularity_enabled: true
+
+  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado_trimming/dorado_trimming/.*:
+    params:
+      singularity_enabled: true
+
+
   toolshed.g2.bx.psu.edu/repos/galaxy-australia/hapcut2/hapcut2/.*:
     mem: 8  # TODO: this could be linear on input size
     params:
@@ -1071,7 +1092,7 @@ tools:
       if: input_size > 40
       scheduling:
         require:
-          - slurm
+        - slurm
   toolshed.g2.bx.psu.edu/repos/galaxy-australia/hifiasm_meta/hifiasm_meta/.*:
     cores: 16
     mem: 62
@@ -1090,6 +1111,10 @@ tools:
     scheduling:
       accept:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/galaxy-australia/plot_ragtag_paf/plot_ragtag_paf/.*:
+    params:
+      singularity_enabled: true
+
   toolshed.g2.bx.psu.edu/repos/galaxy-australia/smudgeplot/smudgeplot/.*:
     cores: 8
     mem: 500
@@ -1167,17 +1192,17 @@ tools:
     mem: 65
     scheduling:
       require:
-        - pulsar # TODO: change ranking to reneable "prefer" and change this to prefer 
+      - pulsar   # TODO: change ranking to reneable "prefer" and change this to prefer 
       reject: # reject pulsars without high max_map_count
-        - pulsar-high-mem1
-        - pulsar-high-mem2
+      - pulsar-high-mem1
+      - pulsar-high-mem2
     rules:
-      - id: maxquant_singularity_rule
-        if: |
-          minimum_singularity_version = '2.0.3.0+galaxy0'
-          helpers.tool_version_lt(tool, minimum_singularity_version)
-        params:
-          singularity_enabled: false
+    - id: maxquant_singularity_rule
+      if: |
+        minimum_singularity_version = '2.0.3.0+galaxy0'
+        helpers.tool_version_lt(tool, minimum_singularity_version)
+      params:
+        singularity_enabled: false
   toolshed.g2.bx.psu.edu/repos/galaxyp/maxquant/maxquant_mqpar/.*:
     cores: 16
     mem: 62
@@ -1186,10 +1211,10 @@ tools:
     mem: 62
   toolshed.g2.bx.psu.edu/repos/galaxyp/morpheus/morpheus/.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/galaxyp/msconvert/msconvert/.*:
     cores: 1
     mem: 3.8
@@ -1204,7 +1229,7 @@ tools:
     mem: 26.8
   toolshed.g2.bx.psu.edu/repos/galaxyp/pyprophet.*:
     params:
-      singularity_enabled: true 
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/galaxyp/pyprophet_score/pyprophet_score/.*:
     scheduling:
       accept:
@@ -1225,6 +1250,19 @@ tools:
     scheduling:
       require:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/genouest/helixer/helixer/*:
+    cores: 8
+    mem: 69
+    params:
+      singularity_enabled: true
+      singularity_run_extra_arguments: --nv
+    scheduling:
+      require:
+      - pulsar-qld-gpu-other
+      - pulsar-qld-gpu
+      accept:
+      - pulsar
+      - training-exempt
   toolshed.g2.bx.psu.edu/repos/goeckslab/.*:
     params:
       singularity_enabled: true
@@ -1288,7 +1326,7 @@ tools:
     mem: 4 + (input_size * 7)
     scheduling:
       accept:
-        - pulsar  
+      - pulsar
     rules:
     - id: anndata_inspect_fail_rule
       if: input_size > 30
@@ -1302,7 +1340,7 @@ tools:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/iuc/arriba_draw_fusions/arriba_draw_fusions/.*:
     params:
       singularity_enabled: true
@@ -1321,7 +1359,7 @@ tools:
       singularity_enabled: true
     scheduling:
       require:
-        - bakta_database
+      - bakta_database
     rules:
     - id: bakta_pulsar_rule
       if: |
@@ -1329,7 +1367,7 @@ tools:
         helpers.tool_version_gte(tool, minimum_pulsar_version)
       scheduling:
         accept:
-          - pulsar
+        - pulsar
   toolshed.g2.bx.psu.edu/repos/iuc/baredsc_.*:
     params:
       singularity_enabled: true
@@ -1436,7 +1474,9 @@ tools:
       mem: 100
     - id: bwa_mem2_fail_rule
       if: input_size > 150
-      fail: "Too much data: There is a limit of 150GB of input for bwa_mem2 jobs. Please note that bwa_mem2 will accept compressed fastsanger.gz input data. Email help@genome.edu.au with any enquiries."
+      fail: 'Too much data: There is a limit of 150GB of input for bwa_mem2 jobs.
+        Please note that bwa_mem2 will accept compressed fastsanger.gz input data.
+        Email help@genome.edu.au with any enquiries.'
   toolshed.g2.bx.psu.edu/repos/iuc/bwameth/bwameth/.*:
     params:
       singularity_enabled: true
@@ -1459,9 +1499,6 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/cemitool/cemitool/.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/chira_.*:
-    params:
-      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/checkm_.*:
     cores: 8
     mem: 120
@@ -1470,6 +1507,9 @@ tools:
     scheduling:
       accept:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/iuc/chira_.*:
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/chromeister/chromeister/.*:
     cores: 1
     mem: 3.8
@@ -1596,26 +1636,26 @@ tools:
     mem: 15.3
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/.*:
+    cores: 5
+    mem: 19.1
   toolshed.g2.bx.psu.edu/repos/iuc/feelnc/feelnc/.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/filtlong/filtlong/.*:
     mem: 12  # TODO: this overrides tpv shared entry giving 50G to each job. It could be changed to a linear function of input size
     rules:
     - id: filtlong_small_input_rule
       if: input_size < 1
       mem: 6
-  toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/.*:
-    cores: 5
-    mem: 19.1
   toolshed.g2.bx.psu.edu/repos/iuc/funannotate.*:
     params:
       singularity_enabled: true
     scheduling:
-      accept:
-        - pulsar
       require:
-        - funannotate  # both funannotate dbs in /mnt/custom-indices on destination VM
+      - funannotate    # both funannotate dbs in /mnt/custom-indices on destination VM
+      accept:
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/iuc/funannotate_compare/funannotate_compare/.*:
     cores: 8
     mem: 40
@@ -1655,18 +1695,18 @@ tools:
       accept:
       - pulsar
     rules:
-      - id: get_organelle_from_reads_large_input_rule
-        if: input_size > 2
-        mem: 120
+    - id: get_organelle_from_reads_large_input_rule
+      if: input_size > 2
+      mem: 120
   toolshed.g2.bx.psu.edu/repos/iuc/ggplot2_.*:
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/ggplot2_heatmap2/ggplot2_heatmap2/.*:
     mem: 12
     rules:
-      - id: ggplot2_heatmap2_large_input_rule
-        if: input_size > 0.001
-        mem: 24
+    - id: ggplot2_heatmap2_large_input_rule
+      if: input_size > 0.001
+      mem: 24
   toolshed.g2.bx.psu.edu/repos/iuc/ggplot2_point/ggplot2_point/.*:
     cores: 1
     mem: 3.8
@@ -1749,19 +1789,19 @@ tools:
         helpers.tool_version_gte(tool, minimum_singularity_version)
       params:
         singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/humann_*:
-    params:
-      singularity_enabled: true  
   toolshed.g2.bx.psu.edu/repos/iuc/humann2/humann2/.*:
-    cores: 6
-    mem: 150
     context:
       max_concurrent_job_count_for_tool_user: 3
+    cores: 6
+    mem: 150
     params:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
+  toolshed.g2.bx.psu.edu/repos/iuc/humann_*:
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/hybpiper/hybpiper/.*:
     params:
       singularity_enabled: true
@@ -1802,7 +1842,7 @@ tools:
       cores: 1
       mem: 3.8
   toolshed.g2.bx.psu.edu/repos/iuc/isoformswitchanalyzer/isoformswitchanalyzer/.*:
-    mem: 10  
+    mem: 10
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/ivar_.*:
@@ -1882,7 +1922,7 @@ tools:
       mem: 62
   toolshed.g2.bx.psu.edu/repos/iuc/kraken.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/kraken2/kraken2/.*:
     context:
       max_concurrent_job_count_for_tool_user: 3
@@ -2345,6 +2385,16 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/nextclade/nextclade/.*:
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/optitype/optitype/.*:
+    params:
+      singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/orthofinder_onlygroups/orthofinder_onlygroups/.*:
+    context:
+      max_concurrent_job_count_for_tool_user: 2
+    cores: 8
+    mem: 30.7
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/pathview/pathview/.*:
     params:
       singularity_enabled: true
@@ -2367,10 +2417,10 @@ tools:
     cores: 8
     mem: 31
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/phyloseq_from_dada2/phyloseq_from_dada2/.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/phyml/phyml/.*:
     cores: 60
     mem: 961
@@ -2504,7 +2554,7 @@ tools:
     mem: 11.5
   toolshed.g2.bx.psu.edu/repos/iuc/prodigal/prodigal/.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/purge_dups/purge_dups/.*:
     cores: 8
     mem: 30.7
@@ -2515,7 +2565,7 @@ tools:
       - pulsar
   toolshed.g2.bx.psu.edu/repos/iuc/qualimap_.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/qualimap_bamqc/qualimap_bamqc/.*:
     cores: 5
     mem: 34.5
@@ -2629,6 +2679,9 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/rna_starsolo/rna_starsolo/.*:
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/rnaquast/rna_quast/.*:
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/rnaspades/rnaspades/.*:
     context:
       max_concurrent_job_count_for_tool_user: 3
@@ -2647,9 +2700,6 @@ tools:
       if: 0.005 <= input_size < 2
       cores: 8
       mem: 30.7
-  toolshed.g2.bx.psu.edu/repos/iuc/rnaquast/rna_quast/.*:
-    params:
-      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/roary/roary/.*:
     cores: 8
     mem: 30.7
@@ -2664,6 +2714,9 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/samtools.*:
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/samtools_markdup/samtools_markdup/.*:
+    cores: 4
+    mem: 15.3
   toolshed.g2.bx.psu.edu/repos/iuc/scanpy_.*:
     params:
       singularity_enabled: true
@@ -2713,7 +2766,7 @@ tools:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
     rules:
     - id: scanpy_plot_fail_rule
       if: input_size > 30
@@ -2738,10 +2791,10 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/sceasy_convert/sceasy_convert/.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/seq2hla/seq2hla/.*:
+  toolshed.g2.bx.psu.edu/repos/iuc/schicexplorer_.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/schicexplorer_.*:
+  toolshed.g2.bx.psu.edu/repos/iuc/seq2hla/seq2hla/.*:
     params:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/seqkit_.*:
@@ -2808,10 +2861,10 @@ tools:
       fail: Your input data exceeds 10GB and therefore is not suitable for Shovill.
   toolshed.g2.bx.psu.edu/repos/iuc/sinto_.*:
     params:
-      singularity_enabled: true 
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/snapatac2_.*:
     params:
-      singularity_enabled: true 
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/snippy/snippy/.*:
     cores: 6
     mem: 23
@@ -2836,7 +2889,7 @@ tools:
       singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff.*:
     params:
-      singularity_enabled: true  
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/.*:
     cores: 3
     mem: 11.5
@@ -2986,6 +3039,12 @@ tools:
       if: 0.005 <= input_size < 2
       cores: 8
       mem: 30.7
+  toolshed.g2.bx.psu.edu/repos/iuc/squirrel_.*:
+    params:
+      singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/squirrel_phylo/squirrel_phylo/.*:
+    cores: 5
+    mem: 19.1
   toolshed.g2.bx.psu.edu/repos/iuc/sra_tools/fasterq_dump/.*:
     context:
       max_concurrent_job_count_for_tool_user: 2
@@ -3006,9 +3065,6 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/stacks.*:
     cores: 2
     mem: 10
-  toolshed.g2.bx.psu.edu/repos/iuc/stacks_denovomap/stacks_denovomap/.*:
-    cores: 16
-    mem: 62
   toolshed.g2.bx.psu.edu/repos/iuc/stacks2.*:
     params:
       singularity_enabled: true
@@ -3039,6 +3095,9 @@ tools:
     scheduling:
       accept:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/iuc/stacks_denovomap/stacks_denovomap/.*:
+    cores: 16
+    mem: 62
   toolshed.g2.bx.psu.edu/repos/iuc/stringtie/stringtie/.*:
     cores: 5
     mem: 19.1
@@ -3054,6 +3113,11 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/stringtie/stringtie_merge/.*:
     cores: 1
     mem: 3.8
+  toolshed.g2.bx.psu.edu/repos/iuc/tbprofiler/tb_profiler_profile/.*:
+    cores: 3
+    mem: 11.5
+    params:
+      singularity_enabled: true
   toolshed.g2.bx.psu.edu/repos/iuc/tetoolkit_tetranscripts/tetoolkit_tetranscripts/.*:
     mem: 12
     params:
@@ -3202,6 +3266,8 @@ tools:
   toolshed.g2.bx.psu.edu/repos/iuc/ucsc_.*:
     params:
       singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/iuc/ucsc_wigtobigwig/ucsc_wigtobigwig/.*:
+    mem: 20
   toolshed.g2.bx.psu.edu/repos/iuc/umi_.*:
     params:
       singularity_enabled: true
@@ -3238,8 +3304,6 @@ tools:
       if: 0.05 <= input_size < 0.3
       cores: 8
       mem: 30.7
-  toolshed.g2.bx.psu.edu/repos/iuc/ucsc_wigtobigwig/ucsc_wigtobigwig/.*:
-    mem: 20
   toolshed.g2.bx.psu.edu/repos/iuc/varscan_.*:
     params:
       singularity_enabled: true
@@ -3308,14 +3372,14 @@ tools:
   toolshed.g2.bx.psu.edu/repos/nilesh/rseqc/.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/nilesh/rseqc/rseqc_bam_stat/.*:
-    mem: 8
   toolshed.g2.bx.psu.edu/repos/nilesh/rseqc/rseqc_RPKM_saturation/.*:
     cores: 8
     mem: 30.7
     scheduling:
       accept:
       - pulsar
+  toolshed.g2.bx.psu.edu/repos/nilesh/rseqc/rseqc_bam_stat/.*:
+    mem: 8
   toolshed.g2.bx.psu.edu/repos/nilesh/rseqc/rseqc_geneBody_coverage/.*:
     cores: 2
     mem: 7.6
@@ -3373,13 +3437,15 @@ tools:
       singularity_enabled: true
     scheduling:
       accept:
-        - pulsar
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/nml/mob_suite/mob_recon/.*:
     rules:
-      - id: mob_recon_large_input_rule
-        if: input_size > 0.004
-        cores: 2
-        mem: 7.6
+    - id: mob_recon_large_input_rule
+      if: input_size > 0.004
+      cores: 2
+      mem: 7.6
+  toolshed.g2.bx.psu.edu/repos/nml/quasitools/.*:
+    mem: 8
   toolshed.g2.bx.psu.edu/repos/nml/spades/spades/.*:
     context:
       max_concurrent_job_count_for_tool_user: 4
@@ -3403,8 +3469,6 @@ tools:
     - id: spades_fail_rule
       if: input_size >= 60
       fail: Too much data, please don't use Spades for this
-  toolshed.g2.bx.psu.edu/repos/nml/quasitools/.*:
-      mem: 8
   toolshed.g2.bx.psu.edu/repos/padge/clipkit/clipkit/.*: {}  # no singularity container, works with conda
   toolshed.g2.bx.psu.edu/repos/perssond/.*:
     params:
@@ -3456,15 +3520,6 @@ tools:
   toolshed.g2.bx.psu.edu/repos/rnateam/chipseeker/chipseeker/.*:
     params:
       singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/rnateam/mirdeep2.*:
-    mem: 8
-    params:
-      singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/rnateam/mirdeep2_mapper/rbc_mirdeep2_mapper/.*:
-    mem: 28
-    scheduling:
-      accept:
-        - pulsar
   toolshed.g2.bx.psu.edu/repos/rnateam/mafft/rbc_mafft/.*:
     context:
       max_concurrent_job_count_for_tool_user: 2
@@ -3477,6 +3532,15 @@ tools:
     - id: rbc_mafft_fail_rule
       if: input_size >= 0.5
       fail: Too much data, please don't use MAFFT for this.
+  toolshed.g2.bx.psu.edu/repos/rnateam/mirdeep2.*:
+    mem: 8
+    params:
+      singularity_enabled: true
+  toolshed.g2.bx.psu.edu/repos/rnateam/mirdeep2_mapper/rbc_mirdeep2_mapper/.*:
+    mem: 28
+    scheduling:
+      accept:
+      - pulsar
   toolshed.g2.bx.psu.edu/repos/rnateam/sortmerna/bg_sortmerna/.*:
     cores: 8
     mem: 30.7
@@ -3484,8 +3548,8 @@ tools:
     cores: 4
     mem: 15.3
     params:
-      tmp_dir: true
       singularity_enabled: true
+      tmp_dir: true
   toolshed.g2.bx.psu.edu/repos/simon-gladman/velvetoptimiser/velvetoptimiser/.*:
     cores: 4
     mem: 15.3
@@ -3572,7 +3636,12 @@ tools:
   .*twobit_builder_data_manager.*:
     cores: 16
     mem: 62
-  'Convert characters1':
+  CONVERTER.*:
+    params:
+      tmp_dir: true
+  CONVERTER_bedgraph_to_bigwig:
+    mem: 30
+  Convert characters1:
     mem: 8
   Cut1:
     cores: 1
@@ -3586,6 +3655,24 @@ tools:
   Remove beginning1:
     cores: 1
     mem: 3.8
+  Show tail1:
+    mem: 10
+  ^fgenesh_annotate$:
+    inherits: fgenesh_tool
+    cores: 60
+    mem: 300
+    scheduling:
+      require:
+      - pulsar-high-mem2
+      accept:
+      - pulsar
+      - training-exempt    # skips user training role rules within users.yml
+    rules:
+    - id: fgenesh_annotate_training_rule  # custom training rule for fgenesh - regular training rules are in users.yml.j2
+      if: |
+        user and any([role.name.startswith('training') for role in user.all_roles() if not role.deleted])
+      cores: 4
+      mem: 25
   __DATA_FETCH__:
     context:
       max_concurrent_job_count_for_tool_total: 20
@@ -3604,10 +3691,10 @@ tools:
     mem: 130
     params:
       docker_enabled: true
-      docker_volumes:
-        $job_directory:ro,$tool_directory:ro,$job_directory/outputs:rw,$working_directory:rw,/data/alphafold:/data:ro
       docker_run_extra_arguments: --gpus all --env ALPHAFOLD_AA_LENGTH_MIN=16 --env
         ALPHAFOLD_AA_LENGTH_MAX=3000 --env ALPHAFOLD_DB={alphafold_db}
+      docker_volumes: 
+        $job_directory:ro,$tool_directory:ro,$job_directory/outputs:rw,$working_directory:rw,/data/alphafold:/data:ro
       tmp_dir: true
     scheduling:
       require:
@@ -3629,13 +3716,17 @@ tools:
         not user or not 'cellranger' in [role.name for role in user.all_roles() if not role.deleted]
       fail: Your account has not been given access to cellranger. Contact help@genome.edu.au
         if you think this is in error.
-  CONVERTER.*:
-    params:
-      tmp_dir: true
-  CONVERTER_bedgraph_to_bigwig:
-    mem: 30
+  fgenesh_get_mrnas_gc:
+    inherits: fgenesh_tool
+  fgenesh_get_proteins:
+    inherits: fgenesh_tool
+  fgenesh_merge:
+    inherits: fgenesh_tool
+  fgenesh_split:
+    inherits: fgenesh_tool
+  fgenesh_to_genbank:
+    inherits: fgenesh_tool
   fgenesh_tool:
-    abstract: true
     params:
       singularity_enabled: true
     rules:
@@ -3644,32 +3735,7 @@ tools:
         not user or not 'Fgenesh' in [role.name for role in user.all_roles() if not role.deleted]
       fail: Your account has not been given access to fgenesh. Contact help@genome.edu.au
         if you think this is in error.
-  ^fgenesh_annotate$:
-    inherits: fgenesh_tool
-    cores: 60
-    mem: 300
-    scheduling:
-      accept:
-        - pulsar
-        - training-exempt  # skips user training role rules within users.yml
-      require:
-        - pulsar-high-mem2
-    rules:
-    - id: fgenesh_annotate_training_rule  # custom training rule for fgenesh - regular training rules are in users.yml.j2
-      if: |
-        user and any([role.name.startswith('training') for role in user.all_roles() if not role.deleted])
-      cores: 4
-      mem: 25
-  fgenesh_merge:
-    inherits: fgenesh_tool
-  fgenesh_split:
-    inherits: fgenesh_tool
-  fgenesh_to_genbank:
-    inherits: fgenesh_tool
-  fgenesh_get_mrnas_gc:
-    inherits: fgenesh_tool
-  fgenesh_get_proteins:
-    inherits: fgenesh_tool
+    abstract: true
   gtdbtk_classify_wf_test:
     cores: 16
     mem: 60
@@ -3705,8 +3771,6 @@ tools:
     mem: 16
     params:
       tmp_dir: true
-  'Show tail1':
-    mem: 10
   sort1:
     params:
       tmp_dir: true
@@ -3723,63 +3787,3 @@ tools:
     scheduling:
       accept:
       - training-exempt   # these jobs are exempt from training rules that would reduce allocated memory
-  toolshed.g2.bx.psu.edu/repos/iuc/tbprofiler/tb_profiler_profile/.*:
-    cores: 3
-    mem: 11.5
-    params:
-      singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/optitype/optitype/.*:
-    params:
-      singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/iuc/orthofinder_onlygroups/orthofinder_onlygroups/.*:
-    context:
-      max_concurrent_job_count_for_tool_user: 2
-    cores: 8
-    mem: 30.7
-    params:
-      singularity_enabled: true
-  toolshed.g2.bx.psu.edu/repos/genouest/helixer/helixer/*:
-    cores: 8
-    mem: 69
-    params:
-      singularity_enabled: true
-      singularity_run_extra_arguments: --nv
-    scheduling:
-      accept:
-      - pulsar
-      - training-exempt
-      require:
-      - pulsar-qld-gpu-other
-      - pulsar-qld-gpu
-  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado/dorado/.*:
-    cores: 8
-    mem: 540  # updated from 69 to 130 to lower the concurrency, not because his needs a lot of RAM, the next day updated to 540 so only one will run at once
-    gpus: 1
-    params:
-      singularity_enabled: true
-      singularity_run_extra_arguments: --nv
-    scheduling:
-      accept:
-      - pulsar
-      - training-exempt
-      require:
-      - pulsar-qld-gpu-other
-      - pulsar-qld-gpu
-  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado_pod5_convert/dorado_pod5_convert/.*:
-    cores: 8
-    params:
-      singularity_enabled: true
-
-  toolshed.g2.bx.psu.edu/repos/galaxy-australia/dorado_trimming/dorado_trimming/.*:
-    params:
-      singularity_enabled: true
-
-
-  toolshed.g2.bx.psu.edu/repos/galaxy-australia/plot_ragtag_paf/plot_ragtag_paf/.*:
-    params:
-      singularity_enabled: true
-
-  toolshed.g2.bx.psu.edu/repos/galaxy-australia/aarnet_filesender/aarnet_filesender/.*:
-    params:
-      singularity_enabled: true
-  
