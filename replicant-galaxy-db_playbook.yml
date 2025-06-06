@@ -5,7 +5,7 @@
       - group_vars/VAULT
       - secret_group_vars/stats_server_vault
   vars:
-    - db_replication_ready_for_user_tasks: no  # change to yes initial sync has been run and db roles exist
+    - db_replication_ready_for_user_tasks: yes  # change to yes initial sync has been run and db roles exist
     - db_replication_origin: galaxy-db
     - db_replication_origin_db_ip: "{{ hostvars[db_replication_origin]['ansible_ssh_host'] }}"
     - db_replication_basebackup_max_rate: 5M
@@ -21,6 +21,7 @@
     - postgresql_pgdata: "/data/replicant_db"
     - postgresql_conf:
       - data_directory: "'/data/replicant_db'"
+      - max_connections: 300  # this must be greater than or equal to the setting on the db being replicated or postgresql won't start
     - host_machine_users:
       - name: uwe
         uid: 7400
@@ -55,19 +56,12 @@
       - geerlingguy.pip
       - galaxyproject.postgresql
       - move-postgresql-data-directory
+      - galaxyproject.gxadmin
       - dj-wasabi.telegraf
       # Note: After running this playbook for the first time the postgresql services
       # may have stopped with errors due to the moving of the data directory.
       # A reboot should fix this.
   post_tasks:
-  - name: Write postgresql.auto.conf with replication settings
-    copy:
-      dest: "{{ postgresql_pgdata }}/postgresql.auto.conf"
-      content: |
-        primary_conninfo = 'host={{ db_replication_origin_db_ip }} port=5432 user=replicator password={{ vault_galaxy_db_replicator_password }} application_name=galaxy_db_replica'
-      owner: postgres
-      group: postgres
-      mode: '0600'
   - name: Deploy manual replication activation script to Melbourne with templated data directory
     copy:
       dest: /root/start_replication.sh
